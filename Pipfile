@@ -9,6 +9,7 @@ verify_ssl = true
 pyyaml = "*"
 paver = "*"
 checksumdir = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.8"

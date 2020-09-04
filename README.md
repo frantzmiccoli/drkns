@@ -18,7 +18,7 @@ CLI interface
 
 ```
 # Checks that the configuration makes sense
-drkns check drkns.yml
+drkns check
 
 # Runs all steps
 drkns run 

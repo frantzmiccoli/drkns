@@ -1,8 +1,9 @@
 import yaml
 import os
+from typing import Optional
 
-from drkns.loader.config.ConfigUnit import ConfigUnit
-from drkns.loader.config import config_directory
+from drkns.config.ConfigUnit import ConfigUnit
+from drkns.config import config_directory
 
 
 class Loader:
@@ -10,7 +11,8 @@ class Loader:
     def __init__(self):
         pass
 
-    def load(self, root_path, associated_name=None):
+    def load(self, root_path: str, associated_name: Optional[str] = None)\
+            -> ConfigUnit:
         root_path = os.path.abspath(root_path)
         if associated_name is None:
             associated_name = 'main'
@@ -34,7 +36,3 @@ class Loader:
         config_unit = ConfigUnit(associated_name, data)
         config_directory[root_path] = config_unit
         return config_unit
-
-
-
-
