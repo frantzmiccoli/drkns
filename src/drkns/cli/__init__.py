@@ -13,7 +13,7 @@ class Cli:
         self._parsed_args: Collection[str] = []
 
     def handle(self):
-        self._parsed_args = sys.argv
+        self._parsed_args = sys.argv[1:]
         if len(self._parsed_args) == 0:
             raise MissingCommandException()
 
@@ -25,6 +25,10 @@ class Cli:
 
         if command == 'run':
             self._run()
+            return
+
+        if command == 'list':
+            self._list()
             return
 
         message = 'Unkown command: ' + command +\
@@ -44,17 +48,23 @@ class Cli:
         config_unit = self._get_config_unit()
         runner = Runner()
 
-        successful, output = runner.run(config_unit)
-        print(output)
+        target = None
+        if len(self._parsed_args) > 1:
+            target = self._parsed_args[1]
+        successful, output_lines = runner.run(config_unit, target)
+        print('\n'.join(output_lines))
         if successful:
             sys.exit()
 
-        sys.exit('An error occured')
+        sys.exit('An error occurred')
+
+    def _list(self):
+        config_unit = self._get_config_unit()
+        steps = config_unit.get_steps()
+        steps.reverse()
+        print('\n'.join(steps))
 
     @staticmethod
     def _get_config_unit() -> ConfigUnit:
         loader = Loader()
         return loader.load('drkns.yml')
-
-
-

@@ -8,9 +8,6 @@ from drkns.config import config_directory
 
 class Loader:
 
-    def __init__(self):
-        pass
-
     def load(self, root_path: str, associated_name: Optional[str] = None)\
             -> ConfigUnit:
         root_path = os.path.abspath(root_path)
@@ -19,10 +16,9 @@ class Loader:
 
         data = yaml.load(open(root_path), Loader=yaml.FullLoader)
 
-        data.directory = data.get('directory', None)
         base_dir = os.path.dirname(root_path)
-        if (data.directory is not None) and (not os.path.isabs(data.directory)):
-            data.directory = os.path.join(base_dir, data.directory)
+        data['directory'] = data.get('directory', '.')
+        data['directory'] = os.path.join(base_dir, data['directory'])
 
         for name, relative_path in data.get('dependencies', {}).items():
             target_path = os.path.abspath(os.path.join(base_dir, relative_path))
@@ -31,7 +27,7 @@ class Loader:
             else:
                 dependency = config_directory[target_path]
 
-            data['dependencies'][associated_name] = dependency
+            data['dependencies'][name] = dependency
 
         config_unit = ConfigUnit(associated_name, data)
         config_directory[root_path] = config_unit

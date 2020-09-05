@@ -1,0 +1,5 @@
+steps:
+  hello: |
+    echo 'hello from the third'
+
+  run: "python3 main.py"

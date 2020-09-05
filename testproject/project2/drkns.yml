@@ -1,0 +1,7 @@
+steps:
+  hello: |
+    echo 'hello from the second'
+
+  run: "python3 main.py"
+dependencies:
+  dependency1WithAnotherKey: ../dependency1/drkns.yml

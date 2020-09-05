@@ -1,0 +1,7 @@
+steps:
+  hello: |
+    echo 'hello'
+
+  run: "python3 main.py"
+dependencies:
+  dependency1: ../dependency1/drkns.yml

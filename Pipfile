@@ -10,6 +10,7 @@ pyyaml = "*"
 paver = "*"
 checksumdir = "*"
 pytest = "*"
+dirhash = "*"
 
 [requires]
 python_version = "3.8"

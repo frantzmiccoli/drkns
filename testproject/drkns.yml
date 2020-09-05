@@ -1,0 +1,5 @@
+dependencies:
+  project1: project1/drkns.yml
+  project2: project2/drkns.yml
+  project3: project3/drkns.yml
+  dependency1: dependency1/drkns.yml
