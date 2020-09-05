@@ -4,7 +4,7 @@ from paver.easy import sh
 import sys
 
 
-def taest_list():
+def test_list():
     _clean()
     output = _invoke_drkns('list')
     assert(len(output) > 6)
@@ -22,7 +22,7 @@ def test_run_partial():
     assert('project2.out' not in ls_output)
 
 
-def taest_run_complete():
+def test_run_complete():
     _clean()
     _invoke_drkns('run')
 
