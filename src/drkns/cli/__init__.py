@@ -2,9 +2,11 @@ import sys
 from typing import Collection
 
 from drkns.exception import MissingCommandException, UnknownCommandException
-from drkns.loader.Loader import Loader
-from drkns.runner.Runner import Runner
-from drkns.config.ConfigUnit import ConfigUnit
+from drkns.configunit.ConfigUnit import ConfigUnit
+from drkns.configunit.load import load
+from drkns.configunit.run import run
+from drkns.configunit.get_steps import get_steps
+from drkns.configunit.get_error_string import get_error_string
 
 
 class Cli:
@@ -37,7 +39,7 @@ class Cli:
 
     def _check(self):
         config_unit = self._get_config_unit()
-        error_string = config_unit.get_error_string()
+        error_string = get_error_string(config_unit)
 
         if error_string is None:
             sys.exit()
@@ -46,13 +48,13 @@ class Cli:
 
     def _run(self):
         config_unit = self._get_config_unit()
-        runner = Runner()
 
         target = None
         if len(self._parsed_args) > 1:
             target = self._parsed_args[1]
-        successful, output_lines = runner.run(config_unit, target)
-        print('\n'.join(output_lines))
+        successful, output_lines = run(config_unit, target)
+        if len(output_lines) > 0:
+            print('\n'.join(output_lines))
         if successful:
             sys.exit()
 
@@ -60,11 +62,10 @@ class Cli:
 
     def _list(self):
         config_unit = self._get_config_unit()
-        steps = config_unit.get_steps()
+        steps = get_steps(config_unit)
         steps.reverse()
         print('\n'.join(steps))
 
     @staticmethod
     def _get_config_unit() -> ConfigUnit:
-        loader = Loader()
-        return loader.load('drkns.yml')
+        return load('drkns.yml')

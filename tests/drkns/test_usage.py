@@ -15,8 +15,8 @@ def test_run_partial():
 
     ls_output = sh('ls /tmp', capture=True)
 
-    assert('project1.out' in ls_output)
-    assert('project2.out' not in ls_output)
+    assert('project1.drknsdemo.out' in ls_output)
+    assert('project2.drknsdemo.out' not in ls_output)
 
 
 def test_run_complete():
@@ -25,31 +25,31 @@ def test_run_complete():
 
     ls_output = sh('ls /tmp', capture=True)
 
-    assert('project1.out' in ls_output)
-    assert('project2.out' in ls_output)
+    assert('project1.drknsdemo.out' in ls_output)
+    assert('project2.drknsdemo.out' in ls_output)
 
 
 def test_run_cache():
     _clean()
     _invoke_drkns('run')
     ls_output = sh('ls /tmp', capture=True)
-    assert('project1.out' in ls_output)
-    assert('project2.out' in ls_output)
+    assert('project1.drknsdemo.out' in ls_output)
+    assert('project2.drknsdemo.out' in ls_output)
 
     sh('rm /tmp/project*.out')
 
     _invoke_drkns('run')
     ls_output = sh('ls /tmp', capture=True)
     # the hash hasn't change the build should not have generated output
-    assert('project1.out' not in ls_output)
-    assert('project2.out' not in ls_output)
+    assert('project1.drknsdemo.out' not in ls_output)
+    assert('project2.drknsdemo.out' not in ls_output)
 
     project_file = 'testproject/project1/main.py'
     sh('echo "# for test" >> ' + project_file, capture=True)
     _invoke_drkns('run')
     ls_output = sh('ls /tmp', capture=True)
-    assert('project1.out' in ls_output)
-    assert('project2.out' not in ls_output)
+    assert('project1.drknsdemo.out' in ls_output)
+    assert('project2.drknsdemo.out' not in ls_output)
 
     sh('cat ' + project_file + ' | grep -v test > ' + project_file + '.mod')
     sh('rm ' + project_file)
@@ -60,7 +60,7 @@ def test_run_no_multi_dependencies_execution():
     _clean()
     _invoke_drkns('run')
 
-    dependency_output_file = '/tmp/dependency1.out'
+    dependency_output_file = '/tmp/dependency1.drknsdemo.out'
     line_count = 0
     with open(dependency_output_file, 'r') as f:
         for _ in f:
@@ -78,5 +78,5 @@ def _invoke_drkns(extra_args: str) -> str:
 
 
 def _clean():
-    command = 'rm -rf /tmp/*.out testproject/.drkns-persistence'
+    command = 'rm -rf /tmp/*.drknsdemo.out testproject/.drkns-persistence'
     sh(command)

@@ -1,3 +1,10 @@
+To do
+===
+
+1. Implementation clean up --> more service oriented
+2. Use sys.POpen instead of paver.easy.sh
+3. S3 synchronization  
+
 Features
 ===
 
