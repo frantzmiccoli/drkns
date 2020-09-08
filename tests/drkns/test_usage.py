@@ -1,4 +1,5 @@
 from paver.easy import sh
+import time
 
 
 def test_list():
@@ -21,10 +22,14 @@ def test_run_partial():
 
 def test_run_complete():
     _clean()
+    t0 = time.time()
     _invoke_drkns('run')
 
     ls_output = sh('ls /tmp', capture=True)
 
+    t1 = time.time()
+    execution_time = t1 - t0
+    assert(execution_time < 10)
     assert('project1.drknsdemo.out' in ls_output)
     assert('project2.drknsdemo.out' in ls_output)
 
