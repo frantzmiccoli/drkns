@@ -1,6 +1,6 @@
 directory: ./src
 steps:
   hello: |
-    echo 'hello'
+    echo 'hello from dependency'
 
   run: "python3 main.py"

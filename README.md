@@ -1,9 +1,8 @@
 To do
 ===
 
-1. Implementation clean up --> more service oriented
-2. Use sys.POpen instead of paver.easy.sh
-3. S3 synchronization  
+1. Use sys.POpen instead of paver.easy.sh. Merge stdout and stderr
+2. S3 synchronization  
 
 Features
 ===
@@ -18,7 +17,10 @@ directory has changed since last build.
 Notes
 ===
 
-One of the problem is to still have the different step splitted, but actually scripting the different steps to be called manually and calling it all from a master build file should do it. Every step is self cancelled if the build has not reason to be ran (already executed).
+One of the problem is to still have the different steps split, but actually 
+scripting the different steps to be called manually and calling it all from
+a master build file should do it. Every step is self cancelled if the build 
+has not reason to be ran (already executed).
 
 CLI interface
 ===

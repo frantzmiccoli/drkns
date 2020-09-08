@@ -28,7 +28,10 @@ def run(config_unit: ConfigUnit, name_or_index: str = None) \
     successful = True
     for step_name, status in config_unit.execution_history.items():
         message = step_name + ': '
-        if not status.successful:
+        if status.ignored:
+            message += BColors.WARNING + 'Ignored' + BColors.ENDC
+            successful = False
+        elif not status.successful:
             message += BColors.FAIL + 'Error' + BColors.ENDC
             successful = False
         else:
@@ -39,7 +42,8 @@ def run(config_unit: ConfigUnit, name_or_index: str = None) \
     return successful, output_elements
 
 
-def _run_step(config_unit: ConfigUnit, name: str) -> str:
+def _run_step(config_unit: ConfigUnit, full_name: str) -> str:
+    name = full_name
     current_config_unit = config_unit
     parts = name.split('.')
     name = parts[-1]
@@ -58,7 +62,7 @@ def _run_step(config_unit: ConfigUnit, name: str) -> str:
 
     target_step_name = parts.pop(0)
     step_execution_status = run_step(current_config_unit, target_step_name)
-    config_unit.execution_history[name] = step_execution_status
+    config_unit.execution_history[full_name] = step_execution_status
 
     if name == list(current_config_unit.steps.keys())[-1]:
         # last step completed ?

@@ -2,4 +2,6 @@ steps:
   hello: |
     echo 'hello from the third'
 
+  sleep: "sleep 10 &"
+
   run: "python3 main.py"
