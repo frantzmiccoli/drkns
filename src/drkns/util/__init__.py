@@ -19,8 +19,9 @@ class BColors:
 def sh(command: str, detached: Optional[bool] = None) -> Tuple[int, str]:
     kwargs = {
         'shell': True,
-        'stderr': subprocess.STDOUT,
-        'stdout': subprocess.PIPE
+        'stdin': subprocess.PIPE,
+        'stdout': subprocess.PIPE,
+        'stderr': subprocess.STDOUT
     }
 
     p = subprocess.Popen(command, **kwargs)

@@ -1,8 +1,8 @@
 To do
 ===
 
-1. Use sys.POpen instead of paver.easy.sh. Merge stdout and stderr
-2. S3 synchronization  
+1. S3 synchronization
+2.   
 
 Features
 ===

@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 class StepExecutionStatus:
 
     def __init__(
@@ -20,3 +23,7 @@ class StepExecutionStatus:
         self.successful: bool = successful
         self.ignored: bool = ignored
         self.output: str = output
+
+        self.restored: bool = False
+
+        self.datetime: datetime = datetime.now()

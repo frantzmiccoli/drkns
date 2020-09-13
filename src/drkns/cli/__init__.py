@@ -58,7 +58,7 @@ class Cli:
         if successful:
             sys.exit()
 
-        sys.exit('An error occurred')
+        sys.exit(1)
 
     def _list(self):
         config_unit = self._get_config_unit()
