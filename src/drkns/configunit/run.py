@@ -33,6 +33,9 @@ def run(config_unit: ConfigUnit, name_or_index: str = None) \
         else:
             message += BColors.OKBLUE + 'OK' + BColors.ENDC
 
+        if status.restored:
+            message += ' (restored)'
+
         if not status.successful:
             output = 'Output for ' + step_name
 

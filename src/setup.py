@@ -4,7 +4,7 @@ from setuptools import find_packages
 
 setup(
     name='drkns',
-    version='0.0.1',
+    version='0.0.2',
     packages=find_packages('./'),
     package_dir={'./src': 'src'},
     url='',
