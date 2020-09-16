@@ -7,6 +7,7 @@ from drkns.configunit.load import load
 from drkns.configunit.run import run
 from drkns.configunit.get_steps import get_steps
 from drkns.configunit.get_error_string import get_error_string
+from drkns.context.clean_persistence_files import clean_persistence_files
 
 
 class Cli:
@@ -31,6 +32,10 @@ class Cli:
 
         if command == 'list':
             self._list()
+            return
+
+        if command == 'clean':
+            clean_persistence_files()
             return
 
         message = 'Unkown command: ' + command +\

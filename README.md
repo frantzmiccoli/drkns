@@ -29,6 +29,9 @@ CLI interface
 # Checks that the configuration makes sense (no output is a good sign
 drkns check
 
+# List all steps
+drkns list
+
 # Runs all steps
 drkns run 
 
@@ -37,6 +40,8 @@ drkns run 1
 
 # Runs identified task
 drkns run sub1.buildImages
+
+# Clean persisted data older than a week old
 ```
 
 Sample master yml
