@@ -26,7 +26,7 @@ CLI interface
 ===
 
 ```
-# Checks that the configuration makes sense
+# Checks that the configuration makes sense (no output is a good sign
 drkns check
 
 # Runs all steps
@@ -36,7 +36,7 @@ drkns run
 drkns run 1
 
 # Runs identified task
-drkns run sub1:buildImages
+drkns run sub1.buildImages
 ```
 
 Sample master yml
@@ -56,6 +56,7 @@ Sample dependency yml
 
 
 subProject1/drkns.yml
+
 ```yml
 steps:
   buildImages: |
