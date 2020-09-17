@@ -40,9 +40,11 @@ steps:
 YAML reference
 ===
 
-* `directory` : Current directory by default, only used to compute the hash associated with this build file
+* `directory` : Current directory by default, only used to compute the hash 
+associated with this build file
 * `steps`: ordered and named commands.
-* `dependencies`: named external drkns yml to load, their steps becomes callables through `drkns dependencyName:stepName`
+* `dependencies`: named external drkns yml to load, their steps becomes 
+callables through `drkns dependencyName.stepName`
 
 CLI interface
 ===
