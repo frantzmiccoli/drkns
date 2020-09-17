@@ -9,7 +9,6 @@ setup(
     package_dir={'./src': 'src'},
     url='',
     license='MIT',
-    author='Fräntz Miccoli',
     description='',
     scripts=['../bin/drkns'],
     install_requires=[
@@ -17,4 +16,5 @@ setup(
         'dirhash>=0.2,<1.0',
         'PyYAML>=5.3,<6.0'
     ],
+    keywords="devops build test monorepo",
 )
