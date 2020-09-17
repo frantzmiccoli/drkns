@@ -1,15 +1,19 @@
 from distutils.core import setup
 from setuptools import find_packages
 
+with open('../README.md') as readme_file:
+    long_description = readme_file.read()
 
 setup(
     name='drkns',
-    version='0.0.2',
+    version='0.0.5',
+    description='Simple monorepo build tool',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url='https://github.com/frantzmiccoli/drkns',
     packages=find_packages('./'),
     package_dir={'./src': 'src'},
-    url='',
     license='MIT',
-    description='',
     scripts=['../bin/drkns'],
     install_requires=[
         'awscli>=1,<2',

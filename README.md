@@ -1,5 +1,7 @@
 drkns is a simple monorepo build tool.
 
+[![Build Status](https://api.travis-ci.org/frantzmiccoli/drkns.png)](http://travis-ci.org/frantzmiccoli/drkns)
+
 Build is driven through YAML files, that can have dependencies over other YAML
 files.
 
