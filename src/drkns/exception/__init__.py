@@ -9,3 +9,11 @@ class MissingCommandException(Exception):
 
 class UnknownCommandException(Exception):
     pass
+
+
+class MissingSyncDirectionException(Exception):
+    pass
+
+
+class MissingS3PathException(Exception):
+    pass

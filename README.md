@@ -1,10 +1,4 @@
-To do
-===
-
-1. S3 synchronization
-2.   
-
-Features
+  Features
 ===
 
 1. Ability to get a hash from a directory, this will enable to know when a 
@@ -25,12 +19,22 @@ has not reason to be ran (already executed).
 CLI interface
 ===
 
+The command line interface offers the following commands :
+
 ```
 # Checks that the configuration makes sense (no output is a good sign
 drkns check
 
 # List all steps
 drkns list
+
+# Restore previous execution information from S3
+# Assuming an environment variable DRKNS_S3_PATH exists under the form 
+# "s3://buck3t/d1r" 
+drkns sync in
+
+# also available for something like
+# drkns sync in s3://buck3t/d1r
 
 # Runs all steps
 drkns run 
@@ -41,7 +45,13 @@ drkns run 1
 # Runs identified task
 drkns run sub1.buildImages
 
-# Clean persisted data older than a week old
+# Clean persisted data older than a week old (to not overload the cache after 
+# too many builds)
+drkns clean
+
+# Persist previous execution information from S3, see assumptions for sync in
+# Beware this erase extra files 
+drkns sync out
 ```
 
 Sample master yml

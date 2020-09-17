@@ -24,6 +24,9 @@ def _get_too_old_file_paths():
     too_old_paths = []
 
     for (dir_path, _, filenames) in walk(persistence_directory):
+        if len(filenames) < 3:  # This step is not executed very often
+            continue
+
         for filename in filenames:
             if path.splitext(filename)[-1] != extension:
                 continue

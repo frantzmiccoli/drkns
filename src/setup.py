@@ -13,6 +13,7 @@ setup(
     description='',
     scripts=['../bin/drkns'],
     install_requires=[
+        'awscli>=1,<2',
         'dirhash>=0.2,<1.0',
         'PyYAML>=5.3,<6.0'
     ],

@@ -8,9 +8,9 @@ verify_ssl = true
 [packages]
 pyyaml = "*"
 paver = "*"
-checksumdir = "*"
 pytest = "*"
 dirhash = "*"
+awscli = "*"
 
 [requires]
 python_version = "3.8"
