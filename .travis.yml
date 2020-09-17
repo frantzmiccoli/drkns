@@ -4,6 +4,5 @@ python:
 install:
   - pipenv --python 3.8
   - pipenv install
-  - pipenv shell
 script:
-  - pytest tests
+  - pipenv run pytest tests
