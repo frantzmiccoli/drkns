@@ -1,20 +1,48 @@
-Features
+drkns is a simple monorepo build tool.
+
+Build is driven through YAML files, that can have dependencies over other YAML
+files.
+
+* Steps are built after the dependencies.
+* A failure at a step prevents the execution of the next one.
+* The result of each execution step, if a directory is left unchanged no
+execution will be triggered again. 
+* State can be persisted in Amazon S3 to have a shared memory between volatile
+build instances
+
+
+Sample master drkns.yml
 ===
 
-1. Ability to get a hash from a directory, this will enable to know when a 
-directory has changed since last build.
-2. Dependency between build processes
-3. Step by step execution
-4. Steps with hash form a key, their previous execution is recorded
-5. Persistence and restoration with AWS S3 is supported
+drkns.yml
 
-Notes
+```yml
+dependencies:
+  sub1: subProject1/drkns.yml
+  
+
+```
+
+Sample dependency drkns.yml
 ===
 
-One of the problem is to still have the different steps split, but actually 
-scripting the different steps to be called manually and calling it all from
-a master build file should do it. Every step is self cancelled if the build 
-has not reason to be ran (already executed).
+
+subProject1/drkns.yml
+
+```yml
+steps:
+  buildImages: |
+       docker build -q -t ...
+       
+  startContainers: "docker run --network host --name test -d backServer-test"
+```
+
+YAML reference
+===
+
+* `directory` : Current directory by default, only used to compute the hash associated with this build file
+* `steps`: ordered and named commands.
+* `dependencies`: named external drkns yml to load, their steps becomes callables through `drkns dependencyName:stepName`
 
 CLI interface
 ===
@@ -53,36 +81,3 @@ drkns clean
 # Beware this erase extra files 
 drkns sync out
 ```
-
-Sample master yml
-===
-
-drkns.yml
-
-```yml
-dependencies:
-  sub1: subProject1/drkns.yml
-  
-
-```
-
-Sample dependency yml
-===
-
-
-subProject1/drkns.yml
-
-```yml
-steps:
-  buildImages: |
-       docker build -q -t ...
-       
-  startContainers: "docker run --network host --name test -d backServer-test"
-```
-
-yml reference
-===
-
-* `directory` : Current directory by default, only used to compute the hash associated with this build file
-* `steps`: ordered and named commands.
-* `dependencies`: named external drkns yml to load, their steps becomes callables through `drkns dependencyName:stepName`
