@@ -1,4 +1,4 @@
-  Features
+Features
 ===
 
 1. Ability to get a hash from a directory, this will enable to know when a 
@@ -77,9 +77,7 @@ steps:
   buildImages: |
        docker build -q -t ...
        
-  startContainers: "docker run --network host --name test -d nxback-test"
-  
-
+  startContainers: "docker run --network host --name test -d backServer-test"
 ```
 
 yml reference
