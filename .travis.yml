@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.8"
+install:
+  - pipenv --python 3.8
+  - pipenv install
+  - pipenv shell
+script:
+  - pytest tests
