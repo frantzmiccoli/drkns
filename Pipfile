@@ -11,6 +11,7 @@ paver = "*"
 pytest = "*"
 dirhash = "*"
 awscli = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.8"

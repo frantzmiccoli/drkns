@@ -5,4 +5,5 @@ install:
   - pipenv --python 3.8
   - pipenv install
 script:
+  - (cd src; pipenv run mypy drkns)
   - pipenv run pytest tests

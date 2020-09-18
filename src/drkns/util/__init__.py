@@ -24,7 +24,7 @@ def sh(command: str, detached: Optional[bool] = None) -> Tuple[int, str]:
         'stderr': subprocess.STDOUT
     }
 
-    p = subprocess.Popen(command, **kwargs)
+    p = subprocess.Popen(command, **kwargs)  # type: ignore
 
     if detached:
         return 0, 'Detached process'

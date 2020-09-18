@@ -1,5 +1,5 @@
 import os
-from typing import Optional, Collection
+from typing import List, Optional
 
 from drkns.configunit.ConfigUnit import ConfigUnit
 
@@ -20,8 +20,8 @@ def get_error_string(config_unit: ConfigUnit, indent: Optional[int] = None) \
         indent_string + ('\n' + indent_string).join(errors) + '\n\n'
 
 
-def _get_errors(config_unit: ConfigUnit, indent: int) -> Collection[str]:
-    errors = []
+def _get_errors(config_unit: ConfigUnit, indent: int) -> List[str]:
+    errors: List[str] = []
     if config_unit.directory is None:
         errors.append(config_unit.name + ': directory is not set')
     elif not os.path.exists(config_unit.directory):
@@ -33,6 +33,6 @@ def _get_errors(config_unit: ConfigUnit, indent: int) -> Collection[str]:
     for name, dependency in config_unit.dependencies.items():
         dependency_error_string = get_error_string(dependency, indent)
         if dependency_error_string is not None:
-            errors = dependency_error_string
+            errors.append(dependency_error_string)
 
     return errors

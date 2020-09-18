@@ -1,19 +1,21 @@
-from typing import Collection
+from typing import List, Tuple, Optional
 
 from drkns.configunit.ConfigUnit import ConfigUnit
 
 
 def get_steps(start_config_unit: ConfigUnit, ignore_dependency: bool = False) \
-        -> Collection[str]:
+        -> List[str]:
     """
     Return steps and dependency steps in proper execution order
     :param start_config_unit:
     :param ignore_dependency:
     :return:
     """
-    steps = []
+    steps: List[str] = []
 
-    considered_prefixes_and_config_units = [(None, start_config_unit)]
+    considered_prefixes_and_config_units: \
+        List[Tuple[Optional[str], ConfigUnit]] = \
+        [(None, start_config_unit)]
 
     while len(considered_prefixes_and_config_units) != 0:
         current_prefix, config_unit = \
@@ -23,7 +25,7 @@ def get_steps(start_config_unit: ConfigUnit, ignore_dependency: bool = False) \
             if ignore_dependency:
                 break
 
-            prefix = dependency_name + '.'
+            prefix: str = dependency_name + '.'
 
             if current_prefix is not None:
                 prefix = current_prefix + prefix

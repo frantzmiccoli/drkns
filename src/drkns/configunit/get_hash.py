@@ -1,4 +1,4 @@
-from dirhash import dirhash
+from dirhash import dirhash  # type: ignore
 from hashlib import sha1
 
 from drkns.configunit.ConfigUnit import ConfigUnit

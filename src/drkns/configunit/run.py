@@ -13,7 +13,7 @@ def run(config_unit: ConfigUnit, name_or_index: str = None) \
         steps = get_steps(config_unit)
     else:
         if name_or_index.isdigit():
-            name_or_index = config_unit.steps.keys()[int(name_or_index)]
+            name_or_index = list(config_unit.steps.keys())[int(name_or_index)]
         steps = [name_or_index]
 
     execution_history = \
