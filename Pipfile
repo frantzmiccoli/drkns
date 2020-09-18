@@ -12,6 +12,7 @@ pytest = "*"
 dirhash = "*"
 awscli = "*"
 mypy = "*"
+twine = "*"
 
 [requires]
 python_version = "3.8"
