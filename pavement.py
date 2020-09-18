@@ -7,10 +7,19 @@ def build():
     if os.path.exists('./build'):
         sh('rm -rf ./build')
 
-    build_script = '''
+    script = '''
         mkdir ./build
         cp -rf ./src/* ./build/
         (cd ./build; python setup.py sdist bdist_wheel)
     '''
 
-    sh(build_script)
+    sh(script)
+
+
+@task
+def deploy():
+    script = '''
+        twine upload ./build/dist/*
+    '''
+
+    sh(script)
