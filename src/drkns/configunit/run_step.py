@@ -30,11 +30,10 @@ def run_step(config_unit: ConfigUnit, step_name: str) -> StepExecutionStatus:
 
         return cascaded_execution_status
 
-    raw_command = config_unit.steps[step_name]
-    command = '(cd "' + config_unit.directory + '"; \n' + raw_command + '\n)'
+    step = config_unit.steps[step_name]
+    command = '(cd "' + config_unit.directory + '"; \n' + step.command + '\n)'
 
-    detached = raw_command.strip()[-1] == '&'
-    return_code, output = sh(command, detached)
+    return_code, output = sh(command, detached=step.background)
     successful = return_code == 0
 
     step_execution_status = \

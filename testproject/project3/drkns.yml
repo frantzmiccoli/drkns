@@ -2,6 +2,10 @@ steps:
   hello: |
     echo 'hello from the third'
 
-  sleep: "sleep 10 &"
+  sleep:
+    command: touch /tmp/drknssleeptest; sleep 10; rm -rf /tmp/drknssleeptest
+    background: true
+
+  confirmSleepFilePresence: ls /tmp/drknssleeptest
 
   run: "python3 main.py"
