@@ -9,9 +9,10 @@ from drkns.context.get_unit_step_path import get_unit_step_path
 
 def store_past_execution_status(
         config_unit: ConfigUnit,
-        step_execution_status: StepExecutionStatus):
+        step_execution_status: StepExecutionStatus,
+        cleanup: bool):
     persistence_path = get_unit_step_path(
-        config_unit, step_execution_status.step_name)
+        config_unit, step_execution_status.step_name, cleanup)
     with open(persistence_path, 'wb') as persistence_file:
         pickle.dump(step_execution_status, persistence_file)
 

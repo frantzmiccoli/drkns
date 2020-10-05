@@ -3,7 +3,7 @@ steps:
     echo 'hello from the third'
 
   sleep:
-    command: touch /tmp/drknssleeptest; sleep 10; rm -rf /tmp/drknssleeptest
+    command: touch /tmp/drknssleeptest; sleep 200; rm -rf /tmp/drknssleeptest
     background: true
 
   confirmSleepFilePresence: ls /tmp/drknssleeptest

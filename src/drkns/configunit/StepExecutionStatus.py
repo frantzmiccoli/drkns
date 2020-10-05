@@ -10,11 +10,13 @@ class StepExecutionStatus:
             step_name: str,
             output: str,
             successful: bool = False,
-            ignored: bool = False
+            ignored: bool = False,
+            cleanup: bool = False
     ):
         self.step_name: str = step_name
         self.successful: bool = successful
         self.ignored: bool = ignored
+        self.cleanup: bool = cleanup
         self.output: str = output
 
         self.restored: bool = False

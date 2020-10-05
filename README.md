@@ -44,14 +44,17 @@ YAML reference
 
 * `directory` : Current directory by default, only used to compute the hash 
 associated with this build file
-* `steps`: ordered and named commands.
 * `dependencies`: named external drkns yml to load, their steps becomes 
 callables through `drkns dependencyName.stepName`
+* `steps`: ordered and named commands. Commands are either a string, or have two
+keys: `command` (string)  and `background` (bool default false)
+* `cleanUpSteps`: same as `steps`, but those are executed no matter the 
+execution of the previous ones. 
 
 CLI interface
 ===
 
-The command line interface offers the following commands :
+The command line interface offers the following commands:
 
 ```
 # Checks that the configuration makes sense (no output is a good sign
@@ -77,8 +80,15 @@ drkns run 1
 # Runs identified task
 drkns run sub1.buildImages
 
-# Clean persisted data older than a week old (to not overload the cache after 
-# too many builds)
+# Runs all steps but returns 0 no matter what happens 
+drkns run --force-success
+
+# Return the last `drkns run` execution status (useful in combination with 
+# drkns run --force-success
+drkns laststatus
+
+# Clean persisted data older than a week old when there is more than a few
+# (to not overload the cache after too many builds)
 drkns clean
 
 # Persist previous execution information from S3, see assumptions for sync in

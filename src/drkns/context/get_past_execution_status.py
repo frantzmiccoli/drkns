@@ -8,9 +8,10 @@ from drkns.context.Context import context
 from drkns.context.get_unit_step_path import get_unit_step_path
 
 
-def get_past_execution_status(config_unit: ConfigUnit, step_name: str) \
+def get_past_execution_status(
+        config_unit: ConfigUnit, step_name: str, cleanup: bool) \
         -> Optional[StepExecutionStatus]:
-    persistence_path = get_unit_step_path(config_unit, step_name)
+    persistence_path = get_unit_step_path(config_unit, step_name, cleanup)
 
     if persistence_path in context.cached_execution_status:
         return context.cached_execution_status[persistence_path]

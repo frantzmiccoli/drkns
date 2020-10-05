@@ -6,7 +6,7 @@ from drkns.exception import MissingCommandException, UnknownCommandException,\
     MissingSyncDirectionException, MissingS3PathException
 from drkns.configunit.ConfigUnit import ConfigUnit
 from drkns.configunit.load import load
-from drkns.configunit.run import run
+from drkns.configunit.Runner import Runner
 from drkns.configunit.get_steps import get_steps
 from drkns.configunit.get_error_string import get_error_string
 from drkns.context.clean_persistence_files import clean_persistence_files
@@ -100,7 +100,8 @@ class Cli:
         target = None
         if len(self._parsed_args) > 1:
             target = self._parsed_args[1]
-        successful, output_lines = run(config_unit, target)
+
+        successful, output_lines = Runner().run(config_unit, target)
         if len(output_lines) > 0:
             print('\n'.join(output_lines))
         if successful:
