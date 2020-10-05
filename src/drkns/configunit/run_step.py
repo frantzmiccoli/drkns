@@ -1,5 +1,5 @@
 import copy
-from typing import Optional
+from typing import List, Optional
 
 from drkns.configunit.ConfigUnit import ConfigUnit
 from drkns.configunit.StepExecutionStatus import StepExecutionStatus
@@ -12,7 +12,7 @@ from drkns.context.store_past_execution_status import \
 
 
 def run_step(config_unit: ConfigUnit, step_name: str, cleanup: bool = False) \
-        -> StepExecutionStatus:
+        -> List[StepExecutionStatus]:
     """
     This function is meant to run a specific step and the previous steps if they
     haven't been run
@@ -25,13 +25,13 @@ def run_step(config_unit: ConfigUnit, step_name: str, cleanup: bool = False) \
     failed_previous_execution_status = _get_dependency_step_failed_status(
         config_unit, step_name, cleanup)
 
-    if failed_previous_execution_status is not None:
+    if (not cleanup) and (failed_previous_execution_status is not None):
         cascaded_execution_status = _get_cascaded_failure_execution_status(
             failed_previous_execution_status, step_name)
         store_past_execution_status(
             config_unit, cascaded_execution_status, cleanup)
 
-        return cascaded_execution_status
+        return [cascaded_execution_status]
 
     steps = config_unit.steps
     if cleanup:
@@ -44,11 +44,12 @@ def run_step(config_unit: ConfigUnit, step_name: str, cleanup: bool = False) \
     successful = return_code == 0
 
     step_execution_status = \
-        StepExecutionStatus(step_name, successful=successful, output=output,
+        StepExecutionStatus(config_unit.name, step_name,
+                            successful=successful, output=output,
                             cleanup=cleanup)
     store_past_execution_status(config_unit, step_execution_status, cleanup)
 
-    return step_execution_status
+    return [step_execution_status]
 
 
 def _get_dependency_step_failed_status(
@@ -71,7 +72,7 @@ def _get_dependency_step_failed_status(
 
         if past_execution_status is None:
             # missing intermediate step
-            past_execution_status = run_step(config_unit, step_name)
+            past_execution_status = run_step(config_unit, step_name)[-1]
 
         if past_execution_status.successful:
             continue
@@ -100,5 +101,9 @@ def _get_cascaded_failure_execution_status(
     if failed_previous_execution_status.restored:
         output += ' (restored)'
 
-    return StepExecutionStatus(step_name, ignored=True, successful=False,
+    config_unit_name = failed_previous_execution_status.config_unit_name
+    cleanup = failed_previous_execution_status.cleanup
+
+    return StepExecutionStatus(config_unit_name, step_name, ignored=True,
+                               successful=False, cleanup=cleanup,
                                output=output)

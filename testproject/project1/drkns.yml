@@ -3,5 +3,7 @@ steps:
     echo 'hello'
 
   run: "python3 main.py"
+cleanupSteps:
+  dummyCleanup: echo "hey this is a cleanup step"
 dependencies:
   dependency1: ../dependency1/drkns.yml

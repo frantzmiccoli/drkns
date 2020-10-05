@@ -15,8 +15,11 @@ def load(root_path: str, associated_name: Optional[str] = None)\
     data = yaml.load(open(root_path), Loader=yaml.FullLoader)
 
     base_dir = os.path.dirname(root_path)
-    data['directory'] = data.get('directory', '.')
-    data['directory'] = os.path.join(base_dir, data['directory'])
+    if 'directory' in data:
+        data['directory'] = \
+            os.path.abspath(os.path.join(base_dir, data['directory']))
+    else:
+        data['directory'] = base_dir
 
     for name, relative_path in data.get('dependencies', {}).items():
         target_path = os.path.abspath(os.path.join(base_dir, relative_path))
@@ -29,4 +32,5 @@ def load(root_path: str, associated_name: Optional[str] = None)\
 
     config_unit = ConfigUnit(associated_name, data)
     config_directory[root_path] = config_unit
+
     return config_unit

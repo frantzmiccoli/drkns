@@ -11,6 +11,7 @@ from drkns.configunit.cleanup import cleanup
 class Runner:
 
     def __init__(self):
+        self._past_config_unit_triggered_execution = False
         self._past_config_unit: Optional[ConfigUnit] = None
 
     def run(self, config_unit: ConfigUnit, name_or_index: str = None) \
@@ -23,16 +24,16 @@ class Runner:
                     list(config_unit.steps.keys())[int(name_or_index)]
             steps = [name_or_index]
 
-        execution_history = \
-            {step_name: self._run_step(config_unit, step_name)
-             for step_name in steps}
+        execution_history = []
+        for step_name in steps:
+            execution_history += self._run_step(config_unit, step_name)
 
-        self._cleanup_if_needed(None)
+        execution_history += self._cleanup_if_needed(None)
 
         return self._get_successful_flag_and_combined_output(execution_history)
 
     def _run_step(self, config_unit: ConfigUnit, full_name: str)\
-            -> StepExecutionStatus:
+            -> List[StepExecutionStatus]:
         current_config_unit = config_unit
         name = full_name
         parts = name.split('.')
@@ -41,10 +42,14 @@ class Runner:
             current_config_unit = \
                 current_config_unit.dependencies[dependency_name]
 
-        self._cleanup_if_needed(current_config_unit)
+        statuses = self._cleanup_if_needed(current_config_unit)
 
         target_step_name = parts.pop(0)
-        return run_step(current_config_unit, target_step_name)
+        statuses += run_step(current_config_unit, target_step_name)
+        if not statuses[-1].restored:
+            self._past_config_unit_triggered_execution = True
+
+        return statuses
 
     def _cleanup_if_needed(self, current_config_unit: Optional[ConfigUnit]) \
             -> List[StepExecutionStatus]:
@@ -53,7 +58,9 @@ class Runner:
 
         statuses = []
         if self._past_config_unit is not None:
-            statuses = cleanup(self._past_config_unit)
+            if self._past_config_unit_triggered_execution:
+                statuses = cleanup(self._past_config_unit)
+            self._past_config_unit_triggered_execution = False
 
         self._past_config_unit = current_config_unit
 
@@ -61,13 +68,13 @@ class Runner:
 
     @staticmethod
     def _get_successful_flag_and_combined_output(
-            execution_history: Dict[str, StepExecutionStatus]) -> Tuple[
+            execution_history: List[StepExecutionStatus]) -> Tuple[
             bool, Collection[str]]:
         outputs = []
         statuses = []
         successful = True
-        for step_name, status in execution_history.items():
-            message = step_name + ': ' + BColors.BOLD
+        for status in execution_history:
+            message = status.name() + ': ' + BColors.BOLD
             if status.ignored:
                 message += BColors.WARNING + 'Ignored' + BColors.ENDC
                 successful = False
@@ -81,7 +88,7 @@ class Runner:
                 message += ' (restored)'
 
             if not status.successful:
-                output = 'Output for ' + step_name
+                output = 'Output for ' + status.name()
 
                 if status.restored:
                     output += ' (restored)'
