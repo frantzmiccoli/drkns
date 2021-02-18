@@ -1,29 +1,43 @@
 from paver.easy import sh
 import time
+from tests.drkns.util import clean, invoke_drkns
+
+
+def test_check():
+    clean()
+    output = invoke_drkns('nominalcase', 'check')
+    assert (len(output) == 0)
 
 
 def test_list():
-    _clean()
-    output = _invoke_drkns('list')
+    clean()
+    output = invoke_drkns('nominalcase', 'list')
     assert(len(output) > 6)
     assert('project1.run' in output)
     assert('project1.dependency1.hello' in output)
 
 
 def test_run_partial():
-    _clean()
-    _invoke_drkns('run project1.run')
+    clean()
+    invoke_drkns('nominalcase', 'run project1.run')
 
     ls_output = sh('ls /tmp', capture=True)
 
     assert('project1.drknsdemo.out' in ls_output)
     assert('project2.drknsdemo.out' not in ls_output)
 
+    clean()
+    invoke_drkns('nominalcase', 'run project1')
+
+    ls_output = sh('ls /tmp', capture=True)
+
+    assert ('project1.drknsdemo.out' in ls_output)
+
 
 def test_run_complete():
-    _clean()
+    clean()
     t0 = time.time()
-    drkns_output = _invoke_drkns('run')
+    drkns_output = invoke_drkns('nominalcase', 'run')
 
     ls_output = sh('ls /tmp', capture=True)
 
@@ -35,26 +49,27 @@ def test_run_complete():
 
     assert('project1.drknsdemo.out' in ls_output)
     assert('project2.drknsdemo.out' in ls_output)
+    assert('project2built.drknsdemo.out' in ls_output)
 
 
 def test_run_cache():
-    _clean()
-    _invoke_drkns('run')
+    clean()
+    invoke_drkns('nominalcase', 'run')
     ls_output = sh('ls /tmp', capture=True)
     assert('project1.drknsdemo.out' in ls_output)
     assert('project2.drknsdemo.out' in ls_output)
 
     sh('rm /tmp/project*.out')
 
-    _invoke_drkns('run')
+    invoke_drkns('nominalcase', 'run')
     ls_output = sh('ls /tmp', capture=True)
-    # the hash hasn't change the build should not have generated output
+    # the hash hasn't changed the build should not have generated output
     assert('project1.drknsdemo.out' not in ls_output)
     assert('project2.drknsdemo.out' not in ls_output)
 
-    project_file = 'testproject/project1/main.py'
+    project_file = 'testprojects/nominalcase/project1/main.py'
     sh('echo "# for test" >> ' + project_file, capture=True)
-    _invoke_drkns('run')
+    invoke_drkns('nominalcase', 'run')
     ls_output = sh('ls /tmp', capture=True)
     assert('project1.drknsdemo.out' in ls_output)
     assert('project2.drknsdemo.out' not in ls_output)
@@ -65,8 +80,8 @@ def test_run_cache():
 
 
 def test_run_no_multi_dependencies_execution():
-    _clean()
-    _invoke_drkns('run')
+    clean()
+    invoke_drkns('nominalcase', 'run')
 
     dependency_output_file = '/tmp/dependency1.drknsdemo.out'
     line_count = 0
@@ -75,16 +90,3 @@ def test_run_no_multi_dependencies_execution():
             line_count += 1
 
     assert(line_count == 1)
-
-
-def _invoke_drkns(extra_args: str) -> str:
-    command = '(export PYTHONPATH=${PYTHONPATH}:${PWD}/src;' \
-              'cd testproject; python ../src/drkns/__init__.py ' \
-              + extra_args + ')'
-    output = sh(command, capture=True)
-    return output
-
-
-def _clean():
-    command = 'rm -rf /tmp/*.drknsdemo.out testproject/.drkns-persistence'
-    sh(command)

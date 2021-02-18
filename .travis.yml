@@ -6,4 +6,4 @@ install:
   - pipenv install
 script:
   - (cd src; pipenv run mypy drkns)
-  - pipenv run pytest tests
+  - export PYTHONPATH=${PYTHONPATH}:${PWD}/src pipenv run pytest tests

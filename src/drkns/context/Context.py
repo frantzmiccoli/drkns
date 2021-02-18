@@ -1,6 +1,6 @@
 from typing import Dict
 
-from drkns.configunit.StepExecutionStatus import StepExecutionStatus
+from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
 
 
 class _Context:

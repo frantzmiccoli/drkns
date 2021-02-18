@@ -1,0 +1,11 @@
+directory: ./
+checkSteps:
+  dependency2Check: |
+    touch /tmp/dependency2.check.drknsdemo.out
+
+buildSteps:
+  dependency2FailingBuild: |
+    touchbruda /tmp/dependency2.failedBuild.drknsdemo.out
+
+cleanupSteps:
+  dependency2Cleanup: touch /tmp/dependency2.cleanup.drknsdemo.out

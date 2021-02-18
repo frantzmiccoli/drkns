@@ -1,4 +1,5 @@
-drkns is a simple monorepo build tool.
+drkns is a simple build tool aimed at easing the continuous integration of 
+monorepos through the use of caching.
 
 [![Build Status](https://api.travis-ci.org/frantzmiccoli/drkns.png)](http://travis-ci.org/frantzmiccoli/drkns)
 
@@ -7,8 +8,8 @@ files.
 
 * Steps are built after the dependencies.
 * A failure at a step prevents the execution of the next one.
-* The result of each execution step, if a directory is left unchanged no
-execution will be triggered again. 
+* The result of each execution step is cached, if a directory is left unchanged 
+  no execution will be triggered again. 
 * State can be persisted in Amazon S3 to have a shared memory between volatile
 build instances
 
@@ -32,7 +33,7 @@ Sample dependency drkns.yml
 subProject1/drkns.yml
 
 ```yml
-steps:
+checkSteps:
   buildImages: |
        docker build -q -t ...
        
@@ -42,13 +43,16 @@ steps:
 YAML reference
 ===
 
-* `directory` : Current directory by default, only used to compute the hash 
+* `directory`: Current directory by default, only used to compute the hash 
 associated with this build file
 * `dependencies`: named external drkns yml to load, their steps becomes 
 callables through `drkns dependencyName.stepName`
-* `steps`: ordered and named commands. Commands are either a string, or have two
-keys: `command` (string)  and `background` (bool default false)
-* `cleanUpSteps`: same as `steps`, but those are executed no matter the 
+* `checkSteps`: ordered and named commands. Commands are either a string, 
+  or have two keys: `command` (string)  and `background` 
+  (bool default false)
+* `buildSteps`: same as `checkSteps`, but those are executed only if 
+  `checkSteps` and dependencies' `checkSteps` got processed without errors. 
+* `cleanUpSteps`: same as `checkSteps`, but those are executed no matter the 
 execution of the previous ones. 
 
 CLI interface
@@ -74,18 +78,14 @@ drkns sync in
 # Runs all steps
 drkns run 
 
-# Runs first step
-drkns run 1
-
 # Runs identified task
 drkns run sub1.buildImages
 
 # Runs all steps but returns 0 no matter what happens 
 drkns run --force-success
 
-# Return the last `drkns run` execution status (useful in combination with 
-# drkns run --force-success
-drkns laststatus
+# Return the last `drkns run` to get the execution status 
+drkns run
 
 # Clean persisted data older than a week old when there is more than a few
 # (to not overload the cache after too many builds)

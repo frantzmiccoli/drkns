@@ -1,0 +1,10 @@
+checkSteps:
+  project1Check:
+    touch /tmp/project1.check.drknsdemo.out
+buildSteps:
+  project1ShouldNotRunBuild:
+    touch /tmp/project1.failedbuildbecausedep1failed.drknsdemo.out
+cleanupSteps:
+  project1Cleanup: touch /tmp/project1.cleanup.drknsdemo.out
+dependencies:
+  dependency1: ../dependency1/drkns.yml

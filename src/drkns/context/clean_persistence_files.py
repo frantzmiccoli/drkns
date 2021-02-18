@@ -3,7 +3,7 @@ import pickle
 import datetime
 
 from drkns.context.get_unit_step_path import persistence_directory, extension
-from drkns.configunit.StepExecutionStatus import StepExecutionStatus
+from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
 
 
 def clean_persistence_files():
@@ -13,7 +13,6 @@ def clean_persistence_files():
     too_old_file_paths = _get_too_old_file_paths()
 
     for too_old_file_path in too_old_file_paths:
-        print(too_old_file_path)
         unlink(too_old_file_path)
 
 

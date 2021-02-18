@@ -2,15 +2,14 @@ import os
 
 from drkns.configunit.ConfigUnit import ConfigUnit
 from drkns.configunit.get_hash import get_hash
+from drkns.step.get_step_type import get_step_type
 
 persistence_directory = '.drkns-persistence'
 extension = '.drknsdata'
 
 
-def get_unit_step_path(config_unit: ConfigUnit, step_name: str, cleanup: bool):
-    prefix = ''
-    if cleanup:
-        prefix = 'cleanup_'
+def get_unit_step_path(config_unit: ConfigUnit, step_name: str):
+    prefix = get_step_type(config_unit, step_name) + '_'
 
     unit_directory = os.path.join(
         persistence_directory, config_unit.name, prefix + step_name)

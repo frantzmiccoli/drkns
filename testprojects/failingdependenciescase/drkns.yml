@@ -1,0 +1,10 @@
+dependencies:
+  project1: project1/drkns.yml
+  project2: project2/drkns.yml
+  project3: project3/drkns.yml
+checkSteps:
+  mainCheck1: touch /tmp/main.checkStep1.drknsdemo.out
+  mainCheck2: touch /tmp/main.checkStep2.drknsdemo.out
+buildSteps:
+  mainBuild1: touch /tmp/main.neverRanBuildStep1.drknsdemo.out
+  mainBuild2: touch /tmp/main.neverRanBuildStep2.drknsdemo.out

@@ -1,0 +1,11 @@
+directory: ./
+checkSteps:
+  dependency1FailingCheck: |
+    touchaaa /tmp/dep1.failedCheck1.drknsdemo.out
+
+buildSteps:
+  dependency1Build: |
+    touch /tmp/dependency1.neverranbuild.drknsdemo.out
+
+cleanupSteps:
+  dependency1Cleanup: touch /tmp/dependency1.cleanup.drknsdemo.out

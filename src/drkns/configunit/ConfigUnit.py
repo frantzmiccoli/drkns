@@ -1,24 +1,12 @@
 import os
-from typing import Optional, Union, Dict
+from subprocess import Popen
+from typing import Optional, Union, Dict, List
 
-from drkns.configunit.StepExecutionStatus import StepExecutionStatus
-from drkns.configunit.Step import Step
+from drkns.step.Step import Step
+import drkns.step.step_type
 
 
 class ConfigUnit:
-
-    def __init__(self, name: str, data: dict):
-        self.name: str = name
-        self.directory: str = data.get('directory', os.path.abspath('.'))
-
-        self.steps: Dict[str, Step] = \
-            self._step_from_raw_steps(data.get('steps', {}))
-        self.cleanupSteps: Dict[str, Step] = \
-            self._step_from_raw_steps(data.get('cleanupSteps', {}))
-
-        self.dependencies: Dict[str, ConfigUnit] = data.get('dependencies', {})
-
-        self.hash: Optional[str] = None
 
     @staticmethod
     def _step_from_raw_steps(raw_steps: Dict[str, Union[str, Dict]]) \
@@ -27,3 +15,32 @@ class ConfigUnit:
             name: Step(command)
             for name, command in raw_steps.items()
         }
+
+    def __init__(self, name: str, data: dict):
+        self.name: str = name
+        self.directory: str = data.get('directory', os.path.abspath('.'))
+
+        self.check_steps: Dict[str, Step] = \
+            self._step_from_raw_steps(data.get('checkSteps', {}))
+        self.build_steps: Dict[str, Step] = \
+            self._step_from_raw_steps(data.get('buildSteps', {}))
+        self.cleanup_steps: Dict[str, Step] = \
+            self._step_from_raw_steps(data.get('cleanupSteps', {}))
+
+        self.dependencies: Dict[str, ConfigUnit] = data.get('dependencies', {})
+
+        self.hash: Optional[str] = None
+
+        self.pending_subprocesses: List[Popen] = []
+
+    def get_steps(self, step_type: str) -> Dict[str, Step]:
+        drkns.step.step_type.check_step_type(step_type)
+
+        if step_type == drkns.step.step_type.CHECK:
+            return self.check_steps
+        if step_type == drkns.step.step_type.BUILD:
+            return self.build_steps
+        if step_type == drkns.step.step_type.CLEANUP:
+            return self.cleanup_steps
+
+        raise Exception('Must have return something by now')

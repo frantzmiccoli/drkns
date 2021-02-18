@@ -1,0 +1,5 @@
+checkSteps:
+  project2Check: |
+    touch /tmp/project2.check.drknsdemo.out
+buildSteps:
+  project2Build: touch /tmp/project2.built.drknsdemo.out

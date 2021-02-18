@@ -6,7 +6,7 @@ with open('../README.md') as readme_file:
 
 setup(
     name='drkns',
-    version='0.0.7',
+    version='1.0.0',
     description='Simple monorepo build tool',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -20,5 +20,5 @@ setup(
         'dirhash>=0.2,<1.0',
         'PyYAML>=5.3,<6.0'
     ],
-    keywords="devops build test monorepo",
+    keywords="devops build test monorepo cache",
 )

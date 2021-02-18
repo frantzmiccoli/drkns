@@ -1,0 +1,10 @@
+checkSteps:
+  project3Check: touch /tmp/project3.check.drknsdemo.out
+buildSteps:
+  project3Build: |
+    touch /tmp/project3.succesbecausedep2failedatbuild.drknsdemo.out
+cleanupSteps:
+  project3failingCleanup: touchaaaa /tmp/project3.cleanup1.drknsdemo.out
+  project3NeverExecutedCleanUp: touch /tmp/project3.cleanup2.drknsdemo.out
+dependencies:
+  dependency2: ../dependency2/drkns.yml

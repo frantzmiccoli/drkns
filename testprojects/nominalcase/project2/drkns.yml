@@ -1,7 +1,9 @@
-steps:
+checkSteps:
   hello: |
     echo 'hello from the second'
 
   run: "python3 main.py"
+buildSteps:
+  touch: touch /tmp/project2built.drknsdemo.out
 dependencies:
   dependency1WithAnotherKey: ../dependency1/drkns.yml

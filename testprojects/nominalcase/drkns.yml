@@ -3,5 +3,5 @@ dependencies:
   project2: project2/drkns.yml
   project3: project3/drkns.yml
   dependency1: dependency1/drkns.yml
-steps:
+checkSteps:
   rootStep: echo 'This is from root'

@@ -1,4 +1,4 @@
-import subprocess
+from subprocess import Popen, PIPE, STDOUT
 import sys
 from typing import Tuple, Optional
 
@@ -16,21 +16,22 @@ class BColors:
     UNDERLINE = '\033[4m'
 
 
-def sh(command: str, detached: Optional[bool] = None) -> Tuple[int, str]:
+def sh(command: str, detached: Optional[bool] = None)\
+        -> Tuple[int, str, Popen]:
     kwargs = {
         'shell': True,
-        'stdin': subprocess.PIPE,
-        'stdout': subprocess.PIPE,
-        'stderr': subprocess.STDOUT
+        'stdin': PIPE,
+        'stdout': PIPE,
+        'stderr': STDOUT
     }
 
-    p = subprocess.Popen(command, **kwargs)  # type: ignore
+    p = Popen(command, **kwargs)  # type: ignore
 
     if detached:
-        return 0, 'Detached process'
+        return 0, 'Detached process', p
 
     p_stdout = p.communicate()[0]
     if p_stdout is not None:
         p_stdout = p_stdout.decode(sys.getdefaultencoding(), 'ignore')
 
-    return p.returncode, p_stdout
+    return p.returncode, p_stdout, p

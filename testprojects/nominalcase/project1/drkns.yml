@@ -1,4 +1,4 @@
-steps:
+checkSteps:
   hello: |
     echo 'hello'
 
