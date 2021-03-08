@@ -1,9 +1,0 @@
-language: python
-python:
-  - "3.8"
-install:
-  - pipenv --python 3.8
-  - pipenv install
-script:
-  - (cd src; pipenv run mypy drkns)
-  - export PYTHONPATH=${PYTHONPATH}:${PWD}/src pipenv run pytest tests

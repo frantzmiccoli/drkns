@@ -1,7 +1,7 @@
 drkns is a simple build tool aimed at easing the continuous integration of 
 monorepos through the use of caching.
 
-[![Build Status](https://api.travis-ci.org/frantzmiccoli/drkns.png)](http://travis-ci.org/frantzmiccoli/drkns)
+[![Build Status](https://github.com/frantzmiccoli/drkns/actions/workflows/main.yml/badge.svg)](https://github.com/frantzmiccoli/drkns/actions)
 
 Build is driven through YAML files, that can have dependencies over other YAML
 files.
