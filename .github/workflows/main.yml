@@ -5,9 +5,27 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9]
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
 
-      - name: Run a one-line script
-        run: echo "Hello, world!"
+      - name: Python version 🐍
+        run: python -c "import sys; print(sys.version)"
+
+      - name: Pipenv install
+        run: pip install pipenv
+
+      - name: Install 🏗
+        run: pipenv install
+
+      - name: MyPy 🧐
+        run: (cd src; pipenv run mypy drkns)
+
+      - name: Test 🔍
+        run: export PYTHONPATH=${PYTHONPATH}:${PWD}/src pipenv run pytest tests
