@@ -12,6 +12,9 @@ def load(root_path: str, associated_name: Optional[str] = None)\
     if associated_name is None:
         associated_name = 'main'
 
+    if os.path.isdir(root_path):
+        root_path = os.path.join(root_path, 'drkns.yml')
+
     data = yaml.load(open(root_path), Loader=yaml.FullLoader)
 
     base_dir = os.path.dirname(root_path)
