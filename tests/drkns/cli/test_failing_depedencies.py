@@ -5,7 +5,7 @@ from tests.drkns.util import clean, invoke_drkns
 
 def test_simple_broken_build():
     clean()
-    invoke_drkns('failingdependenciescase/project1',
+    initial_output = invoke_drkns('failingdependenciescase/project1',
                           'run --force-success')
 
     ls_output = sh('ls /tmp', capture=True)
@@ -21,6 +21,10 @@ def test_simple_broken_build():
     ls_output = sh('ls /tmp', capture=True)
     # previously observed bug
     assert('dependency1.neverranbuild.drknsdemo.out' not in ls_output)
+
+    summary_output = invoke_drkns('failingdependenciescase/project1',
+                                  'run --force-success --summary')
+    assert(len(summary_output) < len(initial_output))
 
 
 def test_broken_full_build():

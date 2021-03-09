@@ -7,8 +7,11 @@ from drkns.runner.get_successful_flag_and_combined_output import\
     get_successful_flag_and_combined_output
 
 
-def run(root_config_unit: ConfigUnit, target_step_name: Optional[str] = None) \
+def run(
+        root_config_unit: ConfigUnit,
+        target_step_name: Optional[str] = None,
+        summary: bool = False) \
         -> Tuple[int, List[str]]:
     plan = get_execution_plan(root_config_unit, target_step_name)
     status_history = run_plan(plan)
-    return get_successful_flag_and_combined_output(status_history)
+    return get_successful_flag_and_combined_output(status_history, summary)

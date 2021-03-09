@@ -87,6 +87,9 @@ drkns run --force-success
 # Return the last `drkns run` to get the execution status 
 drkns run
 
+# Willing to have only the step statuses and not the failed output 
+drkns run --summary
+
 # Clean persisted data older than a week old when there is more than a few
 # (to not overload the cache after too many builds)
 drkns clean

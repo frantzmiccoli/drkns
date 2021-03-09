@@ -20,6 +20,7 @@ class Cli:
         self._args: Collection[str] = []
         self._command: str = None
         self._force_success: bool = False
+        self._summary: bool = False
 
     def handle(self):
         self._parse_args()
@@ -60,6 +61,12 @@ class Cli:
             index = provided_args.index(force_success_flag)
             provided_args.pop(index)
             self._force_success = True
+
+        summary_flag = '--summary'
+        if summary_flag in provided_args:
+            index = provided_args.index(summary_flag)
+            provided_args.pop(index)
+            self._summary = True
 
         for arg in provided_args:
             if arg.find('--') != -1:
@@ -122,7 +129,7 @@ class Cli:
         if len(self._args) > 0:
             target = self._args[0]
 
-        successful, output_lines = run(config_unit, target)
+        successful, output_lines = run(config_unit, target, self._summary)
         if len(output_lines) > 0:
             print('\n'.join(output_lines))
         if successful or self._force_success:
