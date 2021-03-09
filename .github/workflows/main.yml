@@ -16,14 +16,15 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Python version 🐍
+      - name: Check python version 🐍
         run: python -c "import sys; print(sys.version)"
 
-      - name: Pipenv install
+      - name: Install pipenv 🧱
         run: pip install pipenv
 
-      - name: Install 🏗
-        run: pipenv install
+      - name: Install dependencies 🏗
+        run: |
+          pipenv install --python ${{ matrix.python-version }}
 
       - name: MyPy 🧐
         run: (cd src; pipenv run mypy drkns)
