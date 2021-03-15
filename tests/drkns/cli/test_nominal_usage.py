@@ -17,6 +17,12 @@ def test_list():
     assert('project1.dependency1.hello' in output)
 
 
+def test_debug():
+    clean()
+    output = invoke_drkns('nominalcase', 'debug')
+    assert(len(output) > 6)
+
+
 def test_run_partial():
     clean()
     invoke_drkns('nominalcase', 'run project1.run')

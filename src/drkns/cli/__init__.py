@@ -12,6 +12,7 @@ from drkns.context.clean_persistence_files import clean_persistence_files
 from drkns.context.sync import sync_in, sync_out
 from drkns.runner.run import run
 from drkns.runner.get_execution_plan import get_execution_plan
+from drkns.debug.get_debug_information import get_debug_information
 
 
 class Cli:
@@ -43,6 +44,10 @@ class Cli:
 
         if self._command == 'clean':
             self._clean()
+            return
+
+        if self._command == 'debug':
+            self._debug()
             return
 
         message = 'Unkown command: ' + self._command +\
@@ -137,11 +142,16 @@ class Cli:
 
         sys.exit(1)
 
-    @staticmethod
-    def _clean():
+    # noinspection PyMethodMayBeStatic
+    def _clean(self):
         clean_persistence_files()
         sys.exit()
 
-    @staticmethod
-    def _get_config_unit() -> ConfigUnit:
+    def _debug(self):
+        config_unit = self._get_config_unit()
+        print(get_debug_information(config_unit))
+        sys.exit()
+
+    # noinspection PyMethodMayBeStatic
+    def _get_config_unit(self) -> ConfigUnit:
         return load('drkns.yml')

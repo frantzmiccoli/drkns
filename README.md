@@ -67,6 +67,9 @@ drkns check
 # List all steps
 drkns list
 
+# Print debug information
+drkns debug
+
 # Restore previous execution information from S3
 # Assuming an environment variable DRKNS_S3_PATH exists under the form 
 # "s3://buck3t/d1r" 
