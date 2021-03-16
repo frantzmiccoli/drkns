@@ -90,6 +90,9 @@ drkns run --force-success
 # Return the last `drkns run` to get the execution status 
 drkns run
 
+# Limit output to failed and non restored or ignored entities 
+drkns run --limit-output
+
 # Willing to have only the step statuses and not the failed output 
 drkns run --summary
 

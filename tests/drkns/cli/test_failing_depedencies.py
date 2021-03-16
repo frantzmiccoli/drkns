@@ -22,6 +22,10 @@ def test_simple_broken_build():
     # previously observed bug
     assert('dependency1.neverranbuild.drknsdemo.out' not in ls_output)
 
+    limited_output = invoke_drkns('failingdependenciescase/project1',
+                                  'run --force-success --limit-output')
+    assert (len(limited_output) < len(initial_output))
+
     summary_output = invoke_drkns('failingdependenciescase/project1',
                                   'run --force-success --summary')
     assert(len(summary_output) < len(initial_output))

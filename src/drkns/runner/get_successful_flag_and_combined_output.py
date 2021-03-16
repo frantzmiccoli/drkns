@@ -7,8 +7,9 @@ from drkns.stepexecutionstatus.get_status_message_and_output_from_status import\
 
 def get_successful_flag_and_combined_output(
             execution_history: List[StepExecutionStatus],
-            summary: bool = False) -> Tuple[
-            bool, List[str]]:
+            summary: bool = False,
+            limit_output: bool = False
+            ) -> Tuple[bool, List[str]]:
     outputs = []
     statuses = []
     successful = True
@@ -20,7 +21,9 @@ def get_successful_flag_and_combined_output(
         if status.ignored or not status.successful:
             successful = False
 
-        if output is not None:
+        active_output = not status.ignored and not status.restored
+        append_output = not limit_output or active_output
+        if output is not None and append_output:
             outputs.append(output)
 
     if summary:

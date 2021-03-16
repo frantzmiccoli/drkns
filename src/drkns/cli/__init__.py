@@ -22,6 +22,7 @@ class Cli:
         self._command: str = None
         self._force_success: bool = False
         self._summary: bool = False
+        self._limit_output: bool = False
 
     def handle(self):
         self._parse_args()
@@ -72,6 +73,12 @@ class Cli:
             index = provided_args.index(summary_flag)
             provided_args.pop(index)
             self._summary = True
+
+        limit_output_flag = '--limit-output'
+        if limit_output_flag in provided_args:
+            index = provided_args.index(limit_output_flag)
+            provided_args.pop(index)
+            self._limit_output = True
 
         for arg in provided_args:
             if arg.find('--') != -1:
@@ -134,7 +141,8 @@ class Cli:
         if len(self._args) > 0:
             target = self._args[0]
 
-        successful, output_lines = run(config_unit, target, self._summary)
+        successful, output_lines = run(config_unit, target,
+                                       self._summary, self._limit_output)
         if len(output_lines) > 0:
             print('\n'.join(output_lines))
         if successful or self._force_success:
