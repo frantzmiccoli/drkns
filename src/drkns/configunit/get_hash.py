@@ -12,9 +12,12 @@ def get_hash(config_unit: ConfigUnit) -> str:
 
 
 def _get_computed_hash(config_unit: ConfigUnit) -> str:
+    ignore_list = [
+        '.git', '.git/', '.drkns-persistence/', '*.pyc', '__pycache__/'
+    ]
     hash_input = \
         dirhash(config_unit.directory, 'sha1',
-                ignore=['.git', '.git/', '.drkns-persistence/'])
+                ignore=ignore_list)
 
     for dependency_config_unit in config_unit.dependencies.values():
         hash_input += _get_computed_hash(dependency_config_unit)
