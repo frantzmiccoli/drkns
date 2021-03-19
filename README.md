@@ -52,7 +52,7 @@ callables through `drkns dependencyName.stepName`
   (bool default false)
 * `buildSteps`: same as `checkSteps`, but those are executed only if 
   `checkSteps` and dependencies' `checkSteps` got processed without errors. 
-* `cleanUpSteps`: same as `checkSteps`, but those are executed no matter the 
+* `cleanupSteps`: same as `checkSteps`, but those are executed no matter the 
 execution of the previous ones. 
 
 CLI interface
