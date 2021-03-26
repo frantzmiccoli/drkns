@@ -4,7 +4,7 @@ from drkns.configunit.ConfigUnit import ConfigUnit
 from drkns.configunit.get_hash import get_hash
 from drkns.step.get_step_type import get_step_type
 
-persistence_directory = '.drkns-persistence'
+persistence_directory = '.drknspersistence'
 extension = '.drknsdata'
 
 

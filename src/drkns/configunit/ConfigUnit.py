@@ -16,7 +16,12 @@ class ConfigUnit:
             for name, command in raw_steps.items()
         }
 
-    def __init__(self, name: str, data: dict):
+    def __init__(
+            self,
+            name: str,
+            data: dict,
+            ignored: List[str]
+            ):
         self.name: str = name
         self.directory: str = data.get('directory', os.path.abspath('.'))
 
@@ -28,6 +33,8 @@ class ConfigUnit:
             self._step_from_raw_steps(data.get('cleanupSteps', {}))
 
         self.dependencies: Dict[str, ConfigUnit] = data.get('dependencies', {})
+
+        self.ignored: List[str] = ignored
 
         self.hash: Optional[str] = None
 

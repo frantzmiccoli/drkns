@@ -15,6 +15,10 @@ class UnknownCommandFlagException(Exception):
     pass
 
 
+class MalformedIgnorePatternException(Exception):
+    pass
+
+
 class CircularDependencyException(Exception):
     pass
 

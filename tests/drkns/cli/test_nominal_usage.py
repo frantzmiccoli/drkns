@@ -84,6 +84,15 @@ def test_run_cache():
     sh('rm ' + project_file)
     sh('mv ' + project_file + '.mod ' + project_file)
 
+    ignored_file = 'testprojects/nominalcase/project1/main.py.tmp'
+    sh('rm -rf /tmp/project*.drknsdemo.out', capture=True)
+    sh('echo "something that should not trigger a build" >> ' + ignored_file)
+    invoke_drkns('nominalcase', 'run')
+    ls_output = sh('ls /tmp', capture=True)
+    assert('project1.drknsdemo.out' not in ls_output)
+    assert('project2.drknsdemo.out' not in ls_output)
+    sh('rm ' + ignored_file)
+
 
 def test_run_no_multi_dependencies_execution():
     clean()
