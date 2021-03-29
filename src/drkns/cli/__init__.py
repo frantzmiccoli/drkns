@@ -27,32 +27,44 @@ class Cli:
     def handle(self):
         self._parse_args()
 
-        if self._command == 'check':
+        check_command = 'check'
+        if self._command == check_command:
             self._check()
             return
 
-        if self._command == 'list':
+        list_command = 'list'
+        if self._command == list_command:
             self._list()
             return
 
-        if self._command == 'sync':
+        sync_command = 'sync'
+        if self._command == sync_command:
             self._sync()
             return
 
-        if self._command == 'run':
+        run_command = 'run'
+        if self._command == run_command:
             self._run()
             return
 
-        if self._command == 'clean':
+        clean_command = 'clean'
+        if self._command == clean_command:
             self._clean()
             return
 
-        if self._command == 'debug':
+        debug_command = 'debug'
+        if self._command == debug_command:
             self._debug()
             return
 
+        allowed_commands = [
+            check_command, list_command, sync_command, run_command,
+            clean_command, debug_command
+        ]
+
         message = 'Unkown command: ' + self._command +\
-                  '. Allowed commands are "run" and "check".'
+                  '. Allowed commands are "' + '", "'.join(allowed_commands) + \
+                  '".'
         raise UnknownCommandException(message)
 
     def _parse_args(self):
@@ -82,8 +94,13 @@ class Cli:
 
         for arg in provided_args:
             if arg.find('--') != -1:
+                allowed_flags = [
+                    force_success_flag, summary_flag, limit_output_flag
+                ]
+
                 message = 'Unkown command flag: ' + arg + \
-                          '. Allowed flags are "--force-success".'
+                          '. Allowed flags are "' + \
+                          '", "'.join(allowed_flags) + '".'
                 raise UnknownCommandFlagException(message)
 
         self._args = provided_args
