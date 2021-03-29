@@ -5,6 +5,8 @@ from drkns.exception import CircularDependencyException, \
     UnknownDependencyException
 import drkns.step.step_type
 from drkns.step.get_step_type import get_step_type
+from drkns.runner.remove_execution_plan_redundancies \
+    import remove_execution_plan_redundancies
 
 
 def get_execution_plan(
@@ -23,7 +25,9 @@ def get_execution_plan(
     :return: config unit, step within the config unit, prefixed step name
     """
     # This public function only hide the parameters of the private one
-    return _get_execution_plan(config_unit, step_name)
+    raw_execution_plan = _get_execution_plan(config_unit, step_name)
+    execution_plan = remove_execution_plan_redundancies(raw_execution_plan)
+    return execution_plan
 
 
 def _get_execution_plan(

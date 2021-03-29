@@ -15,6 +15,7 @@ def test_list():
     assert(len(output) > 6)
     assert('project1.run' in output)
     assert('project1.dependency1.hello' in output)
+    assert('project2.dependency1WithAnotherKey.run' not in output)
 
 
 def test_debug():
