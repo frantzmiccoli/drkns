@@ -123,15 +123,17 @@ Steps :
 
 Three different step types are available, by order of execution:
 
-1. `checkSteps`: steps necessary to check the integrity of the unit. Building
-    your application, your docker images and running your unit tests go here.
+1. `checkSteps`: steps necessary to check the integrity of the `unit`. 
+    Will always be ran if no checkSteps has already failed in this `unit`.
+    Typically used to build
+    your application, your docker images and run your unit tests.
     If a steps fail, the following ones will not be executed.
-2. `buildSteps`: steps executed only if `checkSteps`, previous build steps and
-   `dependencies` succeeded. You
+2. `buildSteps`: steps executed only if `checkSteps`, dependencies' `checkSteps`
+    and previous buildSteps succeeded. You
     can use this to upload or deploy the build artifacts. Beware there is no
     guarantee that `dependencies` will be executed, there execution might have
     been started 
-3. `cleanupSteps`: steps executed no matter what (except if the unit has not 
+3. `cleanupSteps`: steps executed no matter what (except if the `unit` has not 
    changed since last execution). You can suppress things that have
     taken too much memory or things in the like.
 

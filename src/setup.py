@@ -18,7 +18,8 @@ setup(
     install_requires=[
         'awscli>=1,<2',
         'dirhash>=0.2,<1.0',
-        'PyYAML>=5.3,<6.0'
+        'PyYAML>=5.3,<6.0'  #,
+        #'boto3>=1.12.0,<2.0.0'
     ],
     keywords="devops build test monorepo cache",
 )
