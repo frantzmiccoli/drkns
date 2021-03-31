@@ -97,7 +97,7 @@ def test_run_cache():
     invoke_drkns('nominalcase', 'forget project1')
     invoke_drkns('nominalcase', 'run')
     ls_output = sh('ls /tmp', capture=True)
-    assert ('project1.drknsdemo.out' not in ls_output)
+    assert ('project1.drknsdemo.out' in ls_output)
 
 
 def test_run_no_multi_dependencies_execution():

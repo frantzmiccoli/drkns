@@ -15,4 +15,5 @@ def forget(unit_name: Optional[str] = None):
     if not os.path.exists(unit_path):
         return
 
+    print(unit_path)
     rmtree(unit_path)

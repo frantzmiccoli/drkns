@@ -45,7 +45,7 @@ class Cli:
 
         forget_command = 'forget'
         if self._command == forget_command:
-            self._clean()
+            self._forget()
             return
 
         list_command = 'list'
