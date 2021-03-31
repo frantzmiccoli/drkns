@@ -27,6 +27,10 @@ class MissingCommandException(Exception):
     pass
 
 
+class MissingForgetTargetException(Exception):
+    pass
+
+
 class MissingSyncDirectionException(Exception):
     pass
 

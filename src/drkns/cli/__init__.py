@@ -4,12 +4,13 @@ import os
 
 from drkns.exception import MissingCommandException, UnknownCommandException,\
     MissingSyncDirectionException, MissingS3PathException,\
-    UnknownCommandFlagException
+    UnknownCommandFlagException, MissingForgetTargetException
 from drkns.configunit.ConfigUnit import ConfigUnit
 from drkns.configunit.load import load
 from drkns.configunit.get_error_string import get_error_string
 from drkns.context.clean_persistence_files import clean_persistence_files
 from drkns.context.sync import sync_in, sync_out
+from drkns.context.forget import forget
 from drkns.runner.run import run
 from drkns.runner.get_execution_plan import get_execution_plan
 from drkns.debug.get_debug_information import get_debug_information
@@ -32,21 +33,6 @@ class Cli:
             self._check()
             return
 
-        list_command = 'list'
-        if self._command == list_command:
-            self._list()
-            return
-
-        sync_command = 'sync'
-        if self._command == sync_command:
-            self._sync()
-            return
-
-        run_command = 'run'
-        if self._command == run_command:
-            self._run()
-            return
-
         clean_command = 'clean'
         if self._command == clean_command:
             self._clean()
@@ -57,9 +43,29 @@ class Cli:
             self._debug()
             return
 
+        forget_command = 'forget'
+        if self._command == forget_command:
+            self._clean()
+            return
+
+        list_command = 'list'
+        if self._command == list_command:
+            self._list()
+            return
+
+        run_command = 'run'
+        if self._command == run_command:
+            self._run()
+            return
+
+        sync_command = 'sync'
+        if self._command == sync_command:
+            self._sync()
+            return
+
         allowed_commands = [
-            check_command, list_command, sync_command, run_command,
-            clean_command, debug_command
+            check_command, clean_command, debug_command, forget_command,
+            list_command, run_command, sync_command
         ]
 
         message = 'Unkown command: ' + self._command +\
@@ -114,12 +120,50 @@ class Cli:
 
         sys.exit(error_string)
 
+    # noinspection PyMethodMayBeStatic
+    def _clean(self):
+        clean_persistence_files()
+        sys.exit()
+
+    def _debug(self):
+        config_unit = self._get_config_unit()
+        print(get_debug_information(config_unit))
+        sys.exit()
+
+    def _forget(self):
+        if len(self._args) != 1:
+            error_message = 'Missing forget target. Allowed targets are a ' +\
+                'unit name, "main" and "all".'
+            raise MissingForgetTargetException(error_message)
+
+        unit_name = self._args[0]
+        if unit_name == 'all':
+            unit_name = None
+
+        forget(unit_name)
+
     def _list(self):
         config_unit = self._get_config_unit()
         execution_plan = get_execution_plan(config_unit)
         step_names = \
             [prefixed_step_name for _, _, prefixed_step_name in execution_plan]
         print('\n'.join(step_names))
+
+    def _run(self):
+        config_unit = self._get_config_unit()
+
+        target = None
+        if len(self._args) > 0:
+            target = self._args[0]
+
+        successful, output_lines = run(config_unit, target,
+                                       self._summary, self._limit_output)
+        if len(output_lines) > 0:
+            print('\n'.join(output_lines))
+        if successful or self._force_success:
+            sys.exit()
+
+        sys.exit(1)
 
     def _sync(self):
         if (len(self._args) < 1) \
@@ -150,32 +194,6 @@ class Cli:
             print(output)
 
         sys.exit(return_code)
-
-    def _run(self):
-        config_unit = self._get_config_unit()
-
-        target = None
-        if len(self._args) > 0:
-            target = self._args[0]
-
-        successful, output_lines = run(config_unit, target,
-                                       self._summary, self._limit_output)
-        if len(output_lines) > 0:
-            print('\n'.join(output_lines))
-        if successful or self._force_success:
-            sys.exit()
-
-        sys.exit(1)
-
-    # noinspection PyMethodMayBeStatic
-    def _clean(self):
-        clean_persistence_files()
-        sys.exit()
-
-    def _debug(self):
-        config_unit = self._get_config_unit()
-        print(get_debug_information(config_unit))
-        sys.exit()
 
     # noinspection PyMethodMayBeStatic
     def _get_config_unit(self) -> ConfigUnit:

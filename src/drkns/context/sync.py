@@ -1,5 +1,4 @@
 from typing import Tuple
-from subprocess import Popen
 
 
 from drkns.context.get_unit_step_path import persistence_directory
@@ -15,5 +14,6 @@ def sync_in(target_s3_path: str) -> Tuple[int, str]:
 def sync_out(target_s3_path: str) -> Tuple[int, str]:
     command = 'aws s3 sync {} {} --delete'.format(
         persistence_directory, target_s3_path)
+
     status, output, _ = sh(command)
     return status, output

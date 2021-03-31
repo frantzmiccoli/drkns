@@ -202,6 +202,9 @@ to be defined: `AWS_ACCESS_KEY_ID`, `AWS_DEFAULT_REGION` and
   data.
 * `drkns debug`: prints debug information, mostly to control if execution cache
   has been altered.
+* `drkns forget UNIT_NAME`: forgets the previous execution of `UNIT_NAME`,
+   `all` for everything. Nota the name of the root config unit is `main`. This
+   can be used to force the new execution of some entries.   
 * `drkns list`: prints all the available steps plan. Beware repeating steps are 
    removed.
 * `drkns run [--limit-output] [--force-success] [--summary] STEP_NAME`: run the

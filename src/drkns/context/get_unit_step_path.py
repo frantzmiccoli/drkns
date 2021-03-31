@@ -11,9 +11,13 @@ extension = '.drknsdata'
 def get_unit_step_path(config_unit: ConfigUnit, step_name: str):
     prefix = get_step_type(config_unit, step_name) + '_'
 
-    unit_directory = os.path.join(
-        persistence_directory, config_unit.name, prefix + step_name)
+    unit_path = _get_path_to_unit(config_unit.name)
+    unit_directory = os.path.join(unit_path, prefix + step_name)
     if not os.path.exists(unit_directory):
         os.makedirs(unit_directory, exist_ok=True)
 
     return os.path.join(unit_directory, get_hash(config_unit) + extension)
+
+
+def _get_path_to_unit(unit_name: str) -> str:
+    return os.path.join(persistence_directory, unit_name)
