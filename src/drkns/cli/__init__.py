@@ -175,7 +175,7 @@ class Cli:
 
         environment_variable_name = 'DRKNS_S3_PATH'
         target_s3_path = os.environ.get(environment_variable_name)
-        if len(self._args) == 3:
+        if len(self._args) == 2:
             target_s3_path = self._args[1]
 
         if target_s3_path is None:
