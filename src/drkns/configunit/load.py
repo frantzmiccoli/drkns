@@ -27,7 +27,8 @@ def load(
     if os.path.isdir(root_path):
         root_path = os.path.join(root_path, 'drkns.yml')
 
-    data = yaml.load(open(root_path), Loader=yaml.FullLoader)
+    with open(root_path) as handle:
+        data = yaml.safe_load(handle)
 
     base_dir = os.path.dirname(root_path)
     if 'directory' in data:

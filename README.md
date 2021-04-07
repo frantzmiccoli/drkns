@@ -161,11 +161,12 @@ directory changing the mentioned above hash.
 
 It is not necessarily something that we wish.
 
-You can add partial or full file or directory names to be ignored in a 
-`.drknsignore` file. A unit will ignore specific patterns. 
-Path are not supported.
+You can add partial or full file or directory names (as long as they have a 
+trailing `/`) to be ignored in a `.drknsignore` file. A unit will ignore
+specific patterns.
 
-**Warning: `.drknsignore` are also inherited from parents.**
+**Warning: `.drknsignore` are also inherited from parents.** Because of this 
+path are not supported to avoid ambiguity.
 
 The ignored elements are passed to `dirhash`'s `ignore` argument. The relevant 
 documentation is available at https://pypi.org/project/dirhash/ .
