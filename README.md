@@ -79,12 +79,16 @@ With environment variables:
 ```
 pip install drkns
 
-drkns check    # We never know
-drkns sync in  # Get past execution statuses from S3
-drkns debug    # If needed, you can check which steps are going to run here
-drkns run      # Run the steps
-drkns clean    # Will remove one week old execution statuses to limit disk usage
-drkns sync out # Persist all execution statuses from S3
+drkns check             # We never know
+drkns sync in           # Get past execution statuses from S3
+drkns debug             # If needed, you can check which steps are
+                        #   going to run here
+drkns run               # Run all steps
+drkns clean             # Will remove one week old execution statuses to 
+                        #   limit disk usage
+drkns sync out --delete # Persist all execution statuses from S3,
+                        #  **use --delete** to also delete data removed by 
+                        #  `clean`
 ```
 
 Documentation
@@ -210,8 +214,8 @@ to be defined: `AWS_ACCESS_KEY_ID`, `AWS_DEFAULT_REGION` and
    removed.
 * `drkns run [--limit-output] [--force-success] [--summary] STEP_NAME`: run the
    given steps and its requirements or all steps.
-* `drkns sync DIRECTION [DRKNS_S3_PATH]`: syncs the persisted execution cache, 
-   `DIRECTION` can be `in` or `out`.
+* `drkns sync DIRECTION [--delete ][DRKNS_S3_PATH]`: syncs the persisted 
+  execution cache, `DIRECTION` can be `in` or `out`.
   
 ### Options
 
@@ -220,6 +224,11 @@ to be defined: `AWS_ACCESS_KEY_ID`, `AWS_DEFAULT_REGION` and
   the failed steps' output at this execution (ignored cached ones), steps and
   execution statuses.
 * `--summary`: flag, prints only the summary: steps and execution statuses.
+* `--delete`: flag, deletes remote execution status files that do not exist 
+  locally. It is of paramount importance to use after `clean`. It is a flag as
+  it makes sense to sync in / sync out at each step to prevent duplicate 
+  execution when a parallel processing is happening or the process can be 
+  canceled.
 
 Output
 ---

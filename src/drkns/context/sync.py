@@ -11,9 +11,13 @@ def sync_in(target_s3_path: str) -> Tuple[int, str]:
     return status, output
 
 
-def sync_out(target_s3_path: str) -> Tuple[int, str]:
-    command = 'aws s3 sync {} {} --delete'.format(
-        persistence_directory, target_s3_path)
+def sync_out(target_s3_path: str, delete: bool) -> Tuple[int, str]:
+    delete_flag = ''
+    if delete:
+        delete_flag = '--delete'
+
+    command = 'aws s3 sync {} {} {}'.format(
+        persistence_directory, target_s3_path, delete_flag)
 
     status, output, _ = sh(command)
     return status, output

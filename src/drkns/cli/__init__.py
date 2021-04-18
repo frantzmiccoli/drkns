@@ -24,6 +24,7 @@ class Cli:
         self._force_success: bool = False
         self._summary: bool = False
         self._limit_output: bool = False
+        self._delete: bool = False
 
     def handle(self):
         self._parse_args()
@@ -98,10 +99,17 @@ class Cli:
             provided_args.pop(index)
             self._limit_output = True
 
+        delete_flag = '--delete'
+        if delete_flag in provided_args:
+            index = provided_args.index(delete_flag)
+            provided_args.pop(index)
+            self._delete = False
+
         for arg in provided_args:
             if arg.find('--') != -1:
                 allowed_flags = [
-                    force_success_flag, summary_flag, limit_output_flag
+                    force_success_flag, summary_flag, limit_output_flag,
+                    delete_flag
                 ]
 
                 message = 'Unkown command flag: ' + arg + \
@@ -186,7 +194,7 @@ class Cli:
         if sync_direction == 'in':
             (return_code, output) = sync_in(target_s3_path)
         else:
-            (return_code, output) = sync_out(target_s3_path)
+            (return_code, output) = sync_out(target_s3_path, self._delete)
 
         successful = return_code == 0
 
