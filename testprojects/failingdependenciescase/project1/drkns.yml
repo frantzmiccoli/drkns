@@ -7,4 +7,4 @@ buildSteps:
 cleanupSteps:
   project1Cleanup: touch /tmp/project1.cleanup.drknsdemo.out
 dependencies:
-  dependency1: ../dependency1/drkns.yml
+  - ../dependency1/drkns.yml

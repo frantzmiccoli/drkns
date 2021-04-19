@@ -1,6 +1,6 @@
 from paver.easy import sh
 import time
-from tests.drkns.util import clean, invoke_drkns
+from tests.util import clean, invoke_drkns
 
 
 def test_simple_broken_build():

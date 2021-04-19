@@ -14,15 +14,20 @@ _ignored_by_default = [
 
 def load(
         root_path: str,
-        associated_name: Optional[str] = None,
-        inherited_ignored: Optional[List[str]] = None
+        inherited_ignored: Optional[List[str]] = None,
+        original_root_path: Optional[str] = None
         ) -> ConfigUnit:
     root_path = os.path.abspath(root_path)
-    if associated_name is None:
-        associated_name = 'main'
+    if original_root_path is None:
+        original_root_path = os.path.abspath(root_path)
+
+    if not os.path.isdir(original_root_path):
+        original_root_path = os.path.dirname(original_root_path)
 
     if inherited_ignored is None:
         inherited_ignored = []
+
+    unit_name = _get_unit_name(root_path, original_root_path)
 
     if os.path.isdir(root_path):
         root_path = os.path.join(root_path, 'drkns.yml')
@@ -40,21 +45,48 @@ def load(
     config_unit_ignored = _get_ignored(root_path)
     parsed_ignored = inherited_ignored + config_unit_ignored
 
-    for name, relative_path in data.get('dependencies', {}).items():
+    raw_dependencies = data.get('dependencies', [])
+
+    if isinstance(raw_dependencies, dict):
+        raise Exception('dependencies must be an array of path now')
+
+    parsed_dependencies = []
+    for relative_path in raw_dependencies:
         target_path = os.path.abspath(os.path.join(base_dir, relative_path))
         if not (target_path in config_directory):
-            dependency = load(target_path, name, parsed_ignored)
+            dependency = load(target_path, parsed_ignored, original_root_path)
         else:
             dependency = config_directory[target_path]
 
-        data['dependencies'][name] = dependency
+        parsed_dependencies.append(dependency)
+
+    data['dependencies'] = parsed_dependencies
 
     ignored = parsed_ignored + _ignored_by_default
-    config_unit = ConfigUnit(associated_name, data, ignored)
+    config_unit = ConfigUnit(unit_name, data, ignored)
 
     config_directory[root_path] = config_unit
 
     return config_unit
+
+
+def _get_unit_name(config_path: str, original_root_path: str) -> str:
+    if not os.path.isdir(config_path):
+        config_path = os.path.dirname(config_path)
+
+    if config_path == original_root_path:
+        return 'main'
+
+    unit_name = \
+        os.path.relpath(config_path, original_root_path)
+
+    unit_name = unit_name.replace('.', '_')
+
+    if unit_name == '_':
+        import sys
+        sys.exit()
+
+    return unit_name
 
 
 def _get_ignored(path: str) -> List[str]:

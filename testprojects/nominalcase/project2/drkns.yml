@@ -6,4 +6,4 @@ checkSteps:
 buildSteps:
   touch: touch /tmp/project2built.drknsdemo.out
 dependencies:
-  dependency1WithAnotherKey: ../dependency1/drkns.yml
+  - ../dependency1/drkns.yml

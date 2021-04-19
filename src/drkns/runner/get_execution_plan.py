@@ -50,7 +50,7 @@ def _get_execution_plan(
     if final_step_name is not None:  # The final part is a step
         prefix_parts.pop()
     step_type = None
-    if (final_step_name is not None):
+    if final_step_name is not None:
         step_type = get_step_type(nested_config_unit, final_step_name)
 
     step_prefix = '.'.join(prefix_parts)
@@ -92,7 +92,8 @@ def _get_nested_dependencies_steps(
 
     steps = []
 
-    for dependency_name, dependency_unit in config_unit.dependencies.items():
+    for dependency_unit in config_unit.dependencies:
+        dependency_name = dependency_unit.name
         new_prefix = prefix + dependency_name + '.'
         steps += _get_execution_plan(
             dependency_unit, allowed_types=allowed_types, prefix=new_prefix)
@@ -155,17 +156,19 @@ def _get_nested_config_unit_and_step(
 
     dot_index = composite_step_name.find('.')
     if dot_index == -1:
-        if composite_step_name in root_config_unit.dependencies:
-            return root_config_unit.dependencies[composite_step_name], None
+        dependency_config_unit = \
+            root_config_unit.get_dependency(composite_step_name)
+        if dependency_config_unit is not None:
+            return dependency_config_unit, None
         return root_config_unit, composite_step_name
 
     dependency_name = composite_step_name[0:dot_index]
-    if dependency_name not in root_config_unit.dependencies:
+    dependency_config_unit = root_config_unit.get_dependency(dependency_name)
+    if dependency_config_unit is None:
         message = dependency_name + ' is not a dependency in ' + \
                   root_config_unit.name
         raise UnknownDependencyException(message)
 
-    dependency_config_unit = root_config_unit.dependencies[dependency_name]
     sub_step_name = composite_step_name[dot_index + 1:]
     return _get_nested_config_unit_and_step(dependency_config_unit,
                                             sub_step_name)

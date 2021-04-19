@@ -32,13 +32,23 @@ class ConfigUnit:
         self.cleanup_steps: Dict[str, Step] = \
             self._step_from_raw_steps(data.get('cleanupSteps', {}))
 
-        self.dependencies: Dict[str, ConfigUnit] = data.get('dependencies', {})
+        self.dependencies: List[ConfigUnit] = data.get('dependencies', [])
 
         self.ignored: List[str] = ignored
 
         self.hash: Optional[str] = None
 
         self.pending_subprocesses: List[Popen] = []
+
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def get_dependency(self, dependency_name: str) -> Optional['ConfigUnit']:
+        for dependency in self.dependencies:
+            if dependency.name == dependency_name:
+                return dependency
+
+        return None
 
     def get_steps(self, step_type: str) -> Dict[str, Step]:
         drkns.step.step_type.check_step_type(step_type)

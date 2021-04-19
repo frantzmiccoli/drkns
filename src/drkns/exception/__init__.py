@@ -3,6 +3,10 @@ class UnknownDependencyException(Exception):
     pass
 
 
+class CircularDependencyException(Exception):
+    pass
+
+
 class UnknownStepException(Exception):
     pass
 
@@ -12,14 +16,6 @@ class UnknownCommandException(Exception):
 
 
 class UnknownCommandFlagException(Exception):
-    pass
-
-
-class MalformedIgnorePatternException(Exception):
-    pass
-
-
-class CircularDependencyException(Exception):
     pass
 
 
@@ -36,4 +32,36 @@ class MissingSyncDirectionException(Exception):
 
 
 class MissingS3PathException(Exception):
+    pass
+
+
+class MalformedIgnorePatternException(Exception):
+    pass
+
+
+class MissingGenerationTemplateDirectoryException(Exception):
+    pass
+
+
+class MissingGenerationTemplateException(Exception):
+    pass
+
+
+class MultipleGenerationTemplateException(Exception):
+    pass
+
+
+class UnableToParseGenerationTemplateBlock(Exception):
+    pass
+
+
+class MissingGenerationTemplateTag(Exception):
+    pass
+
+
+class UnableToFindPattern(Exception):
+    pass
+
+
+class DependenciesNotAvailable(Exception):
     pass

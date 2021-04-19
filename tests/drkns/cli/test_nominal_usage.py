@@ -1,6 +1,9 @@
 from paver.easy import sh
 import time
-from tests.drkns.util import clean, invoke_drkns
+import yaml
+
+
+from tests.util import clean, invoke_drkns
 
 
 def test_check():
@@ -22,6 +25,13 @@ def test_debug():
     clean()
     output = invoke_drkns('nominalcase', 'debug')
     assert(len(output) > 6)
+
+
+def test_generate():
+    output = invoke_drkns('nominalcase', 'generate')
+    data = yaml.safe_load(output)
+    assert('drkns-check' in data['jobs']['project1']['needs'])
+    assert('dependency1' in data['jobs']['project1']['needs'])
 
 
 def test_run_partial():

@@ -1,4 +1,4 @@
-from tests.drkns.util import get_mock_config_unit
+from tests.util import get_mock_config_unit
 
 from drkns.runner.get_execution_plan import get_execution_plan
 from drkns.exception import CircularDependencyException
@@ -68,7 +68,7 @@ def test_get_execution_plan_target_dependency_case():
 
 def test_get_execution_plan_loop_should_be_detected():
     mock_config_unit = get_mock_config_unit()
-    mock_config_unit.dependencies['dependency_1'].dependencies['root'] = \
+    mock_config_unit.dependencies[0].dependencies[0] = \
         mock_config_unit
 
     exception_count = 0

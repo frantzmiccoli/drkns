@@ -1,8 +1,8 @@
 dependencies:
-  project1: project1/drkns.yml
-  project2: project2/drkns.yml
-  project3: project3/drkns.yml
-  dependency1: dependency1
+  - project1/drkns.yml
+  - project2/drkns.yml
+  - project3/drkns.yml
+  - dependency1
 checkSteps:
   mainCheck1: touch /tmp/main.checkStep1.drknsdemo.out
   mainCheck2: touch /tmp/main.checkStep2.drknsdemo.out

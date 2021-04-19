@@ -1,6 +1,6 @@
 from subprocess import Popen, PIPE, STDOUT
 import sys
-from typing import Tuple, Optional
+from typing import Tuple, Optional, List
 
 
 class BColors:
@@ -35,3 +35,20 @@ def sh(command: str, detached: Optional[bool] = None)\
         p_stdout = p_stdout.decode(sys.getdefaultencoding(), 'ignore')
 
     return p.returncode, p_stdout, p
+
+
+def get_longest_common_prefix(items: List[str]) -> str:
+    longest_prefix = ''
+    if len(items) == 0:
+        return longest_prefix
+
+    max_index = min([len(item) for item in items])
+    for i in range(0, max_index):
+        reference_char = items[0][i]
+        for item in items:
+            if item[i] != reference_char:
+                return longest_prefix
+
+        longest_prefix += reference_char
+
+    return longest_prefix

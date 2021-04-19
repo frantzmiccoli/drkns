@@ -35,7 +35,7 @@ def _get_errors(config_unit: ConfigUnit, indent: int) -> List[str]:
         message = config_unit.name + ': no steps nor dependencies are defined'
         errors.append(message)
 
-    for name, dependency in config_unit.dependencies.items():
+    for dependency in config_unit.dependencies:
         dependency_error_string = get_error_string(dependency, indent)
         if dependency_error_string is not None:
             errors.append(dependency_error_string)
@@ -49,7 +49,7 @@ def _get_errors(config_unit: ConfigUnit, indent: int) -> List[str]:
 
 def _get_dependency_or_step_names_error(
         config_unit: ConfigUnit) -> Optional[str]:
-    names = list(config_unit.dependencies.keys())
+    names = [dependency.name for dependency in config_unit.dependencies]
     for step_type in drkns.step.step_type.types:
         names += list(config_unit.get_steps(step_type).keys())
 
