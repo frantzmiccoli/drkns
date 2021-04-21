@@ -5,66 +5,66 @@ on:  [push]
 jobs:
 
   drkns-check:
-     runs-on: ubuntu-20.04
-     env:
-       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-       DRKNS_S3_PATH: ${{ secrets.DRKNS_S3_PATH }}
-     steps:
-       - uses: actions/checkout@v2
+    runs-on: ubuntu-20.04
+    env:
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      DRKNS_S3_PATH: ${{ secrets.DRKNS_S3_PATH }}
+    steps:
+      - uses: actions/checkout@v2
 
-       - uses: actions/cache@v2
-         with:
-           path: /home/runner/.local/lib/python3.8
-           key: ${{ runner.os }}-${{ hashFiles('.github/workflows/main.yml') }}
+      - uses: actions/cache@v2
+        with:
+          path: /home/runner/.local
+          key: ${{ runner.os }}-${{ hashFiles('.github/workflows/main.yml') }}
 
-       - name: Install dependency
-         run: pip install drkns
+      - name: Install dependency
+        run: pip install drkns
 
-       - name: drkns check
-         run: drkns check
+      - name: drkns check
+        run: drkns check
 
   ## %DRKNS_GROUPS{}% ##
 
   ## %DRKNS_GROUP_TEMPLATE_BEGIN% ##
 
   %DRKNS_GROUP_NAME%:
-     runs-on: ubuntu-20.04
-     needs: [drkns-check%DRKNS_DEPENDENCY_GROUPS_NAMES?{, }%%DRKNS_DEPENDENCY_GROUPS_NAMES{, }%]
-     env:
-       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-       DRKNS_S3_PATH: ${{ secrets.DRKNS_S3_PATH }}
-     steps:
-       - uses: actions/checkout@v2
+    runs-on: ubuntu-20.04
+    needs: [drkns-check%DRKNS_DEPENDENCY_GROUPS_NAMES?{, }%%DRKNS_DEPENDENCY_GROUPS_NAMES{, }%]
+    env:
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      DRKNS_S3_PATH: ${{ secrets.DRKNS_S3_PATH }}
+    steps:
+      - uses: actions/checkout@v2
 
-       - uses: actions/cache@v2
-         with:
-           path: /home/runner/.local/lib/python3.8
-           key: ${{ runner.os }}-${{ hashFiles('.github/workflows/main.yml') }}
+      - uses: actions/cache@v2
+        with:
+          path: /home/runner/.local
+          key: ${{ runner.os }}-${{ hashFiles('.github/workflows/main.yml') }}
 
-       - name: Install dependency
-         run: pip install drkns
+      - name: Install dependency
+        run: pip install drkns
 
-       - name: drkns sync in
-         run: drkns sync in
+      - name: drkns sync in
+        run: drkns sync in
 
-       ## %DRKNS_GROUP_UNITS{}% ##
+      ## %DRKNS_GROUP_UNITS{}% ##
 
-       ## %DRKNS_UNIT_TEMPLATE_BEGIN% ##
+      ## %DRKNS_UNIT_TEMPLATE_BEGIN% ##
 
-       - name: %DRKNS_UNIT_NAME%
-         run: paver run --limit-output %DRKNS_UNIT_NAME%
-         continue-on-error: true
+      - name: %DRKNS_UNIT_NAME%
+        run: drkns run --limit-output %DRKNS_UNIT_NAME%
+        continue-on-error: true
 
-       # sync out after every step to preserve execution steps in case
-       # of interruption
-       - name: drkns sync out
-         run: drkns sync out
+      # sync out after every step to preserve execution steps in case
+      # of interruption
+      - name: drkns sync out
+        run: drkns sync out
 
-       ## %DRKNS_UNIT_TEMPLATE_END% ##
+      ## %DRKNS_UNIT_TEMPLATE_END% ##
 
   ## %DRKNS_GROUP_TEMPLATE_END% ##
 

@@ -6,7 +6,7 @@ with open('../README.md') as readme_file:
 
 setup(
     name='drkns',
-    version='3.0.2',
+    version='3.0.3',
     description='Simple monorepo build tool',
     long_description=long_description,
     long_description_content_type="text/markdown",
