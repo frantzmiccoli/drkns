@@ -13,6 +13,12 @@ from drkns.context.sync import sync_in, sync_out
 from drkns.context.forget import forget
 from drkns.runner.run import run
 from drkns.runner.get_execution_plan import get_execution_plan
+from drkns.runner.get_dependency_groups_configuration \
+    import get_dependency_groups_configuration
+from drkns.generation.templateloading.get_generation_template \
+    import get_generation_template
+from drkns.generation.generation.get_formatted_from_groups_configuration \
+    import get_formatted_from_groups_configuration
 from drkns.debug.get_debug_information import get_debug_information
 
 
@@ -64,9 +70,14 @@ class Cli:
             self._sync()
             return
 
+        generate_command = 'generate'
+        if self._command == generate_command:
+            self._generate()
+            return
+
         allowed_commands = [
             check_command, clean_command, debug_command, forget_command,
-            list_command, run_command, sync_command
+            list_command, run_command, sync_command, generate_command
         ]
 
         message = 'Unkown command: ' + self._command +\
@@ -202,6 +213,15 @@ class Cli:
             print(output)
 
         sys.exit(return_code)
+
+    def _generate(self):
+        config_unit = self._get_config_unit()
+        generation_template = get_generation_template('.')
+        groups_configuration = get_dependency_groups_configuration(config_unit)
+        generated = get_formatted_from_groups_configuration(
+            generation_template,
+            groups_configuration)
+        print(generated)
 
     # noinspection PyMethodMayBeStatic
     def _get_config_unit(self) -> ConfigUnit:

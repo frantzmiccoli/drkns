@@ -203,7 +203,8 @@ class _PlanRunner:
         if config_unit.name in self._failed_dependency_build_statuses:
             return self._failed_dependency_build_statuses[config_unit.name]
 
-        for dependency_name, _ in config_unit.dependencies.items():
+        for dependency_unit in config_unit.dependencies:
+            dependency_name = dependency_unit.name
             if dependency_name in self._failed_dependency_check_statuses:
                 return self._failed_dependency_check_statuses[dependency_name]
 

@@ -20,4 +20,6 @@ def get_unit_step_path(config_unit: ConfigUnit, step_name: str):
 
 
 def _get_path_to_unit(unit_name: str) -> str:
+    unit_name = unit_name.replace('/', '_')
+    unit_name = unit_name.replace('..', '_')
     return os.path.join(persistence_directory, unit_name)

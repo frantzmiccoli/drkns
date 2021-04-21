@@ -16,7 +16,7 @@ def _get_computed_hash(config_unit: ConfigUnit) -> str:
         dirhash(config_unit.directory, 'sha1',
                 ignore=config_unit.ignored)
 
-    for dependency_config_unit in config_unit.dependencies.values():
+    for dependency_config_unit in config_unit.dependencies:
         hash_input += _get_computed_hash(dependency_config_unit)
 
     hashed = hash_input[0:7] + '-' + \

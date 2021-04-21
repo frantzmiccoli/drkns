@@ -1,5 +1,5 @@
 drkns is a simple build tool aimed at easing the continuous integration of 
-monorepos through the use of caching.
+monorepos through dependency aware caching.
 
 [![Build Status](https://github.com/frantzmiccoli/drkns/actions/workflows/main.yml/badge.svg)](https://github.com/frantzmiccoli/drkns/actions)
 
@@ -39,7 +39,7 @@ dependencies:
   library1: library/library1
 ```
 
-Sample `projectdrkns.yml`:
+Sample `projects/project1/drkns.yml`:
 
 ```
 checkSteps:
@@ -48,6 +48,8 @@ checkSteps:
 buildSteps:
   build: pipenv run paver build
   deploy: pipenv run paver deploy_to_pypi
+dependencies:
+  - ../../library/library1
 ```
 
 Test that everything is alright
@@ -105,8 +107,8 @@ or can be depended on.
 
 * `directory`: string, Current directory by default, only used to compute the 
    hash associated with this build file
-* `dependencies`: dictionary of strings, named external `drkns.yml` to load,
-   you can also only indicate a directory name. 
+* `dependencies`: strings sequence, path containing another `drkns.yml` file 
+  to load, you can also only indicate a directory name. 
 * `checkSteps`: dictionary of steps, see below.
 * `buildSteps`: dictionary of steps, see below.
 * `cleanupSteps`: dictionary of steps, see below.
@@ -182,7 +184,6 @@ Sample `.drknsignore`:
 build/
 ```
 
-
 ### Persistence
 
 Persistence is enabled through S3 buckets.
@@ -195,6 +196,35 @@ argument.
 `drkns` expects [AWS environment variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) 
 to be defined: `AWS_ACCESS_KEY_ID`, `AWS_DEFAULT_REGION` and 
 `AWS_SECRET_ACCESS_KEY` for the AWS client to work properly.
+
+### Parallel CI Generation
+
+This is an advanced usage. You are invited to skip this if this is your first 
+dive in `drkns`.
+
+Once your CI is setup, maybe you want to parallelize job execution, `drkns` can 
+generate your CI configuration provided you write a template.
+
+The template must be located at `.drknsgeneration/*.template.*`, only a single
+template file must be in this directory. 
+
+Fields to be defined in the template, always in the form `%FIELD_NAME%`:
+
+* `DRKNS_GROUP_BEGIN` and `%DRKNS_GROUP_END%`: around a group template 
+  definition. A group will contain `units` that are
+  ran together. The lines containing those tags will be removed. For now, only
+  one unit per group is supported, so do not be surprised.
+* `DRKNS_UNIT_BEGIN` and `DRKNS_UNIT_END`: around a unit template, 
+  mostly calling `drkns run %DRKNS_UNIT_NAME%`. The lines containing those tags 
+  will be removed.
+* `%DRKNS_GROUP_UNITS%`: where group units will be inserted - 
+  must be within a group template. The line containing this tag will be removed.
+* `%DRKNS_UNIT_NAME%`: the unit's name
+* `%DRKNS_DEPENDENCY_GROUPS_NAMES{, }%`: the dependency group names, 
+  with a comma separator (as an example),
+  if you need a 
+  separator: `%DRKNS_DEPENDENCY_GROUPS_NAMES?{, }%` will only insert a `, `.
+* `%DRKNS_ALL_GROUPS_NAMES{, }%`: all group names, here with a comma separator
 
 `drkns` CLI
 ---
@@ -216,6 +246,7 @@ to be defined: `AWS_ACCESS_KEY_ID`, `AWS_DEFAULT_REGION` and
    given steps and its requirements or all steps.
 * `drkns sync DIRECTION [--delete ][DRKNS_S3_PATH]`: syncs the persisted 
   execution cache, `DIRECTION` can be `in` or `out`.
+* `drkns generate`: generates a file based on the template described above
   
 ### Options
 

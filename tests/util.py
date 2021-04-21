@@ -32,7 +32,7 @@ def get_mock_config_unit() -> ConfigUnit:
         'checkSteps': {'dependency_1_check_step_1': 'ls'},
         'buildSteps': {'dependency_1_build_step_1': 'ls'},
         'cleanupSteps': {'dependency_1_cleanup_step_1': 'ls'},
-        'dependencies': {'sub_dependency_1': sub_dependency_1_config_unit}
+        'dependencies': [sub_dependency_1_config_unit]
     }, [])
 
     dependency_2_config_unit = ConfigUnit('dependency_2', {
@@ -45,10 +45,10 @@ def get_mock_config_unit() -> ConfigUnit:
         'checkSteps': {'root_check_step_1': 'ls'},
         'buildSteps': {'root_build_step_1': 'ls'},
         'cleanupSteps': {'root_cleanup_step_1': 'ls'},
-        'dependencies': {
-            'dependency_1': dependency_1_config_unit,
-            'dependency_2': dependency_2_config_unit
-        }
+        'dependencies': [
+            dependency_1_config_unit,
+            dependency_2_config_unit
+        ]
     }, [])
 
     return root_config_unit
