@@ -48,7 +48,9 @@ def load(
     raw_dependencies = data.get('dependencies', [])
 
     if isinstance(raw_dependencies, dict):
-        raise Exception('dependencies must be an array of path now')
+        error_message = 'dependencies must be an array of path now, ' + \
+                        'error in: ' + root_path
+        raise Exception(error_message)
 
     parsed_dependencies = []
     for relative_path in raw_dependencies:
