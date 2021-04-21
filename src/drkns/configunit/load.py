@@ -82,6 +82,7 @@ def _get_unit_name(config_path: str, original_root_path: str) -> str:
     unit_name = \
         os.path.relpath(config_path, original_root_path)
 
+    unit_name = unit_name.replace('/', '_')
     unit_name = unit_name.replace('.', '_')
 
     if unit_name == '_':
