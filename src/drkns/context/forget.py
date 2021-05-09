@@ -15,14 +15,11 @@ def forget(unit_name: Optional[str] = None):
     if not os.path.exists(clean_path):
         return
 
-    # rmtree(clean_path)  # but aws does not remove empty directories
-    print(clean_path)
+    # rmtree(clean_path)  # but aws s3 sync does not remove empty directories
 
     for root, dirs, files in os.walk(clean_path):
-        print(root, dirs, files)
         for file in files:
             file_path = os.path.join(root, file)
-            print(file_path)
             os.remove(file_path)
 
         if len(dirs) != 0:
