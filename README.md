@@ -12,11 +12,6 @@ rebuild an every projects when changes are committed.
 But we can't build necessarily limit ourselves to run builds and tests 
 in directories where changes occurred because some projects depends on others.
 
-Caveat
-===
-
-No parallel execution.
-
 Quick start
 ===
 
@@ -86,7 +81,7 @@ drkns sync in           # Get past execution statuses from S3
 drkns debug             # If needed, you can check which steps are
                         #   going to run here
 drkns run               # Run all steps
-drkns clean             # Will remove one week old execution statuses to 
+drkns clean             # Will remove four weeks old execution statuses to 
                         #   limit disk usage
 drkns sync out --delete # Persist all execution statuses from S3,
                         #  **use --delete** to also delete data removed by 
@@ -233,7 +228,7 @@ Fields to be defined in the template, always in the form `%FIELD_NAME%`:
 
 * `drkns check`: checks `drkns.yml` files by loading the one in the current
    directory and printing errors if anything bad happens.
-* `drkns clean`: cleans older than a week execution steps from the persisted 
+* `drkns clean`: cleans older than four weeks execution steps from the persisted 
   data.
 * `drkns debug`: prints debug information, mostly to control if execution cache
   has been altered.

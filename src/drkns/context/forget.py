@@ -8,11 +8,25 @@ from drkns.context.get_unit_step_path import \
 
 
 def forget(unit_name: Optional[str] = None):
-    if unit_name is None:
-        rmtree(persistence_directory)
+    clean_path = persistence_directory
+    if unit_name is not None:
+        clean_path = _get_path_to_unit(unit_name)  # type: ignore
 
-    unit_path = _get_path_to_unit(unit_name)  # type: ignore
-    if not os.path.exists(unit_path):
+    if not os.path.exists(clean_path):
         return
 
-    rmtree(unit_path)
+    # rmtree(clean_path)  # but aws does not remove empty directories
+    print(clean_path)
+
+    for root, dirs, files in os.walk(clean_path):
+        print(root, dirs, files)
+        for file in files:
+            file_path = os.path.join(root, file)
+            print(file_path)
+            os.remove(file_path)
+
+        if len(dirs) != 0:
+            continue  # A marker will be in the root dirs
+
+        with open(os.path.join(root, '.direxists'), 'a') as _:
+            pass

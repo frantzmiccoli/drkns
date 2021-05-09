@@ -40,8 +40,8 @@ def _get_too_old_file_paths():
 
 def _is_file_to_old(file_path) -> bool:
     status = _get_persisted_status(file_path)
-    a_week_ago = datetime.datetime.now() - datetime.timedelta(weeks=1)
-    return status.datetime < a_week_ago
+    four_weeks_ago = datetime.datetime.now() - datetime.timedelta(weeks=4)
+    return status.datetime < four_weeks_ago
 
 
 def _get_persisted_status(file_path) -> StepExecutionStatus:

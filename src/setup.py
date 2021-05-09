@@ -6,8 +6,8 @@ with open('../README.md') as readme_file:
 
 setup(
     name='drkns',
-    version='3.0.3',
-    description='Simple monorepo build tool',
+    version='3.0.4',
+    description='Simple agnostic monorepo build tool',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url='https://github.com/frantzmiccoli/drkns',
@@ -18,8 +18,7 @@ setup(
     install_requires=[
         'awscli>=1,<2',
         'dirhash>=0.2,<1.0',
-        'PyYAML>=5.3,<6.0'  #,
-        #'boto3>=1.12.0,<2.0.0'
+        'PyYAML>=5.3,<6.0'
     ],
     keywords="devops build test monorepo cache",
 )
