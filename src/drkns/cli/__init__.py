@@ -114,7 +114,7 @@ class Cli:
         if delete_flag in provided_args:
             index = provided_args.index(delete_flag)
             provided_args.pop(index)
-            self._delete = False
+            self._delete = True
 
         for arg in provided_args:
             if arg.find('--') != -1:
