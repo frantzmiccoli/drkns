@@ -192,16 +192,18 @@ argument.
 to be defined: `AWS_ACCESS_KEY_ID`, `AWS_DEFAULT_REGION` and 
 `AWS_SECRET_ACCESS_KEY` for the AWS client to work properly.
 
-### Parallel CI Generation
+### Parallel CI generation
 
 This is an advanced usage. You are invited to skip this if this is your first 
 dive in `drkns`.
 
 Once your CI is setup, maybe you want to parallelize job execution, `drkns` can 
-generate your CI configuration provided you write a template.
+generate your CI configuration, provided you write a template.
 
 The template must be located at `.drknsgeneration/*.template.*`, only a single
-template file must be in this directory. 
+template file must be in this directory.
+
+If you need a more concrete example, check [the dummy project sample main.template.yml](https://github.com/frantzmiccoli/drkns/blob/master/testprojects/nominalcase/.drknsgeneration/main.template.yml). 
 
 Fields to be defined in the template, always in the form `%FIELD_NAME%`:
 
@@ -251,10 +253,10 @@ Fields to be defined in the template, always in the form `%FIELD_NAME%`:
   execution statuses.
 * `--summary`: flag, prints only the summary: steps and execution statuses.
 * `--delete`: flag, deletes remote execution status files that do not exist 
-  locally. It is of paramount importance to use after `clean`. It is a flag as
-  it makes sense to sync in / sync out at each step to prevent duplicate 
-  execution when a parallel processing is happening or the process can be 
-  canceled.
+  locally. It is of paramount importance to use after `clean`. It is a flag and 
+  not a default behavior as it makes sense to sync in / sync out at each step 
+  to prevent duplicate execution when a parallel processing is happening, or in
+  the case the whole process is canceled.
 
 Output
 ---
