@@ -24,10 +24,10 @@ jobs:
 
       - name: Install dependencies 🏗
         run: |
-          pipenv install --python ${{ matrix.python-version }}
+          pipenv install --dev --python ${{ matrix.python-version }}
 
       - name: MyPy 🧐
-        run: (cd src; pipenv run mypy drkns)
+        run: (cd src; pipenv run mypy --install-types --non-interactive drkns)
 
       - name: Test 🔍
         run: export PYTHONPATH=${PYTHONPATH}:${PWD}/src pipenv run pytest tests
