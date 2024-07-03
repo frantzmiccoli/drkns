@@ -7,9 +7,9 @@ Le problem
 ===
 
 Monorepositories contain many projects, it rarely makes sense to
-rebuild an every projects when changes are committed.
+rebuild a every project when changes are committed.
 
-But we can't build necessarily limit ourselves to run builds and tests 
+But we can't limit ourselves to run builds and tests 
 in directories where changes occurred because some projects depends on others.
 
 Quick start
