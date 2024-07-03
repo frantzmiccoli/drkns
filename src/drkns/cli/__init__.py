@@ -1,10 +1,11 @@
+from typing import Collection, Optional
 import sys
-from typing import Collection
 import os
 
-from drkns.exception import MissingCommandException, UnknownCommandException,\
-    MissingSyncDirectionException, MissingS3PathException,\
-    UnknownCommandFlagException, MissingForgetTargetException
+from drkns.exception import (UnexpectedBranchException, MissingCommandException,
+    UnknownCommandException, MissingSyncDirectionException,
+    MissingS3PathException, UnknownCommandFlagException,
+    MissingForgetTargetException)
 from drkns.configunit.ConfigUnit import ConfigUnit
 from drkns.configunit.load import load
 from drkns.configunit.get_error_string import get_error_string
@@ -24,16 +25,19 @@ from drkns.debug.get_debug_information import get_debug_information
 
 class Cli:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._args: Collection[str] = []
-        self._command: str = None
+        self._command: Optional[str] = None
         self._force_success: bool = False
         self._summary: bool = False
         self._limit_output: bool = False
         self._delete: bool = False
 
-    def handle(self):
+    def handle(self) -> None:
         self._parse_args()
+
+        if self._command is None:
+            raise UnexpectedBranchException('No command has been parsed')
 
         check_command = 'check'
         if self._command == check_command:

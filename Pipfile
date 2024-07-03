@@ -4,15 +4,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "*"
+twine = "*"
+mypy = "*"
+paver = "*"
 
 [packages]
-pyyaml = "*"
 paver = "*"
-pytest = "*"
 dirhash = "*"
 awscli = "*"
-mypy = "*"
-twine = "*"
+"ruamel.yaml" = "*"
 
 [requires]
 python_version = "3.8"

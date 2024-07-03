@@ -7,6 +7,10 @@ class CircularDependencyException(Exception):
     pass
 
 
+class UnexpectedBranchException(Exception):
+    pass
+
+
 class UnknownStepException(Exception):
     pass
 

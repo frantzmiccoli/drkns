@@ -50,7 +50,7 @@ class _PlanRunner:
 
     def _clean_up_pending_processes_if_needed(
         self,
-        current_config_unit: ConfigUnit = None
+        current_config_unit: Optional[ConfigUnit] = None
     ):
         need_process_cleanup = self._need_to_cleanup_pending_processes(
             current_config_unit)
