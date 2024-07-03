@@ -88,6 +88,28 @@ drkns sync out --delete # Persist all execution statuses from S3,
                         #  `clean`
 ```
 
+Troubleshooting
+===
+
+Trigger a new build without changing anything
+---
+
+We all like stable builds but sometimes life happens and things break where they
+should not. We would love to relaunch our CI without having to just randomly
+edit a file to ignore the caching.
+
+If you have a `DRKNS_S3_PATH` environment variable you can remove it from the
+commands.
+
+```
+drkns sync in s3://my-drkns/project
+drkns sync forget dir1_project2
+drkns sync out s3://my-drkns/project --delete
+```
+
+The `--delete` flag is required, as S3 synchronization otherwise ignores files
+that have been removed locally.
+
 Documentation
 ===
 
