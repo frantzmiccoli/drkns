@@ -1,4 +1,5 @@
-import yaml
+from ruamel.yaml import YAML
+
 import os
 import re
 from typing import Optional, List
@@ -33,7 +34,8 @@ def load(
         root_path = os.path.join(root_path, 'drkns.yml')
 
     with open(root_path) as handle:
-        data = yaml.safe_load(handle)
+        yaml = YAML(typ='safe')
+        data = yaml.load(handle)
 
     base_dir = os.path.dirname(root_path)
     if 'directory' in data:
