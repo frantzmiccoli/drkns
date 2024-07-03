@@ -5,13 +5,13 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
+twine = "*"
+mypy = "*"
 
 [packages]
 paver = "*"
 dirhash = "*"
 awscli = "*"
-mypy = "*"
-twine = "*"
 "ruamel.yaml" = "*"
 
 [requires]
