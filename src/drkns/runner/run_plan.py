@@ -83,8 +83,11 @@ class _PlanRunner:
     # END cleanup
 
     # noinspection PyMethodMayBeStatic
-    def _run(self, config_unit: ConfigUnit, step_name: str) \
-            -> StepExecutionStatus:
+    def _run(
+        self,
+        config_unit: ConfigUnit,
+        step_name: str
+    ) -> StepExecutionStatus:
         """
         Actually calls the underlying command
 
@@ -112,9 +115,10 @@ class _PlanRunner:
         return step_execution_status
 
     def _handle_execution_status(
-            self,
-            config_unit: ConfigUnit,
-            step_execution_status: StepExecutionStatus):
+        self,
+        config_unit: ConfigUnit,
+        step_execution_status: StepExecutionStatus
+    ):
 
         step_type = step_execution_status.step_type
         is_check = step_type == drkns.step.step_type.CHECK
@@ -138,10 +142,10 @@ class _PlanRunner:
     #   - Either from a step that failed on which this step depends
 
     def _get_execution_status_from_past_execution(
-            self,
-            config_unit: ConfigUnit,
-            step_name: str
-            ) -> Optional[StepExecutionStatus]:
+        self,
+        config_unit: ConfigUnit,
+        step_name: str
+    ) -> Optional[StepExecutionStatus]:
         """
         Will resolve a persisted execution status or a failed one from
         dependency execution

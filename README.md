@@ -77,15 +77,16 @@ With environment variables:
 pip install drkns
 
 drkns check             # We never know
-drkns sync in           # Get past execution statuses from S3
+drkns sync in --delete  # Get past execution statuses from S3
 drkns debug             # If needed, you can check which steps are
                         #   going to run here
 drkns run               # Run all steps
 drkns clean             # Will remove four weeks old execution statuses to 
                         #   limit disk usage
 drkns sync out --delete # Persist all execution statuses from S3,
-                        #  **use --delete** to also delete data removed by 
-                        #  `clean`
+                        # **use --delete** to also delete data removed by 
+                        # `clean`, or not push old data that has been removed
+                        # in the remote storage.
 ```
 
 Troubleshooting
@@ -102,7 +103,7 @@ If you have a `DRKNS_S3_PATH` environment variable you can remove it from the
 commands.
 
 ```
-drkns sync in s3://my-drkns/project
+drkns sync in s3://my-drkns/project --delete
 drkns sync forget dir1_project2
 drkns sync out s3://my-drkns/project --delete
 ```

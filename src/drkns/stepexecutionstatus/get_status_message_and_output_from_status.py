@@ -4,8 +4,9 @@ from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
 from drkns.util import BColors
 
 
-def get_status_message_and_output_from_status(status: StepExecutionStatus)\
-        -> Tuple[str, Optional[str]]:
+def get_status_message_and_output_from_status(
+    status: StepExecutionStatus
+) -> Tuple[str, Optional[str]]:
     """
 
     :param status:
