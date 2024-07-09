@@ -104,7 +104,7 @@ commands.
 
 ```
 drkns sync in s3://my-drkns/project --delete
-drkns sync forget dir1_project2
+drkns sync forget dir1_project2/fedd32a-adbcc445555
 drkns sync out s3://my-drkns/project --delete
 ```
 
@@ -257,7 +257,8 @@ Fields to be defined in the template, always in the form `%FIELD_NAME%`:
   data.
 * `drkns debug`: prints debug information, mostly to control if execution cache
   has been altered.
-* `drkns forget UNIT_NAME`: forgets the previous execution of `UNIT_NAME`,
+* `drkns forget UNIT_NAME[/HASH]`: forgets the previous execution of 
+  `UNIT_NAME` at `HASH` (or every execution if hash is not provided),
    `all` for everything. Nota the name of the root config unit is `main`. This
    can be used to force the new execution of some entries.   
 * `drkns list`: prints all the available steps plan. Beware repeating steps are 

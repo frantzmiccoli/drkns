@@ -1,9 +1,11 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 from drkns.configunit.ConfigUnit import ConfigUnit
+from drkns.exception import UnexpectedBranchException
 from drkns.runner.get_execution_plan import get_execution_plan
 from drkns.configunit.get_hash import get_hash
 from drkns.context.get_past_execution_status import get_past_execution_status
+from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
 
 
 def get_debug_information(config_unit: ConfigUnit):
@@ -17,8 +19,8 @@ def get_debug_information(config_unit: ConfigUnit):
 
 
 def _get_hash_debug_information(
-        execution_plan: List[Tuple[ConfigUnit, str, str]]
-        ) -> str:
+    execution_plan: List[Tuple[ConfigUnit, str, str]]
+) -> str:
     names_to_hashes = {}
 
     for (config_unit, _, _) in execution_plan:
@@ -40,21 +42,36 @@ def _get_execution_plan_debug_information(
 
     for (config_unit, step_name, prefixed_step_name) in execution_plan:
         status = get_past_execution_status(config_unit, step_name)
-        line = '* ' + prefixed_step_name + ': \n\t'
-
-        if status is not None:
-            line += 'previous execution as '
-            if status.successful:
-                line += 'successful'
-            else:
-                if status.ignored:
-                    line += 'ignored'
-                else:
-                    line += 'execution error'
-        else:
-            line += '---'
+        line = _get_line_for_status(status, prefixed_step_name)
 
         lines.append(line)
 
     lines.insert(0, 'Execution plan:')
     return '\n'.join(lines)
+
+
+def _get_line_for_status(
+    status: Optional[StepExecutionStatus],
+    prefixed_step_name: str
+) -> str:
+    line = '* ' + prefixed_step_name + ': \n\t'
+
+    if status is not None:
+        line += 'previous execution as '
+        if status.successful:
+            line += 'successful'
+        else:
+            if status.ignored:
+                line += 'ignored'
+            else:
+                line += 'execution error'
+
+            if status.hash is None:
+                raise UnexpectedBranchException()
+
+            line += ' ' + status.hash
+
+    else:
+        line += '---'
+
+    return line

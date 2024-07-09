@@ -1,7 +1,7 @@
 import copy
 from typing import Tuple, List, Dict, Optional
 
-
+from drkns.configunit.get_hash import get_hash
 from drkns.util import sh
 from drkns.configunit import ConfigUnit
 from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
@@ -108,9 +108,10 @@ class _PlanRunner:
             config_unit.pending_subprocesses.append(subprocess)
 
         step_execution_status = \
-            StepExecutionStatus(config_unit.name, step_name,
-                                successful=successful, output=output,
-                                step_type=step_type)
+            StepExecutionStatus(
+                config_unit.name, step_name,
+                successful=successful, output=output,
+                step_type=step_type, hash=get_hash(config_unit))
 
         return step_execution_status
 
@@ -164,7 +165,7 @@ class _PlanRunner:
             self,
             config_unit: ConfigUnit,
             step_name: str
-            ) -> Optional[StepExecutionStatus]:
+    ) -> Optional[StepExecutionStatus]:
         blocking_execution_status = \
             self._get_blocking_failure_execution_status(config_unit, step_name)
 
@@ -184,7 +185,8 @@ class _PlanRunner:
             ignored=True,
             successful=False,
             step_type=blocking_execution_status.step_type,
-            output=output)
+            output=output,
+            hash=get_hash(config_unit))
 
     def _get_blocking_failure_execution_status(
             self,
