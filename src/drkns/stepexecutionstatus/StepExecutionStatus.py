@@ -10,13 +10,14 @@ _cwd = os.getcwd()
 class StepExecutionStatus:
 
     def __init__(
-            self,
-            config_unit_name: str,
-            step_name: str,
-            output: str,
-            successful: bool = False,
-            ignored: bool = False,
-            step_type: str = drkns.step.step_type.CHECK
+        self,
+        config_unit_name: str,
+        step_name: str,
+        output: str,
+        successful: bool = False,
+        ignored: bool = False,
+        step_type: str = drkns.step.step_type.CHECK,
+        hash: Optional[str] = None
     ):
         self.config_unit_name: str = config_unit_name
         self.step_name: str = step_name
@@ -25,6 +26,7 @@ class StepExecutionStatus:
         self.step_type: str = step_type
         self.output: str = output
 
+        self.hash: Optional[str] = hash
         self.restored: bool = False
 
         self.datetime: datetime = datetime.now()
