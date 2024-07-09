@@ -6,10 +6,10 @@ from drkns.stepexecutionstatus.get_status_message_and_output_from_status import\
 
 
 def get_successful_flag_and_combined_output(
-            execution_history: List[StepExecutionStatus],
-            summary: bool = False,
-            limit_output: bool = False
-            ) -> Tuple[bool, List[str]]:
+    execution_history: List[StepExecutionStatus],
+    summary: bool = False,
+    limit_output: bool = False
+) -> Tuple[bool, List[str]]:
     outputs = []
     statuses = []
     successful = True

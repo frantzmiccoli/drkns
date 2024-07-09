@@ -21,7 +21,7 @@ class ConfigUnit:
             name: str,
             data: dict,
             ignored: List[str]
-            ):
+    ):
         self.name: str = name
         self.directory: str = data.get('directory', os.path.abspath('.'))
 

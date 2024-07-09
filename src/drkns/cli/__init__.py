@@ -155,8 +155,7 @@ class Cli:
 
     def _forget(self):
         if len(self._args) != 1:
-            error_message = 'Missing forget target. Allowed targets are a ' +\
-                'unit name, "main" and "all".'
+            error_message = 'Missing forget target unit name'
             raise MissingForgetTargetException(error_message)
 
         unit_name = self._args[0]
@@ -207,7 +206,7 @@ class Cli:
             raise MissingS3PathException(message)
 
         if sync_direction == 'in':
-            (return_code, output) = sync_in(target_s3_path)
+            (return_code, output) = sync_in(target_s3_path, self._delete)
         else:
             (return_code, output) = sync_out(target_s3_path, self._delete)
 
