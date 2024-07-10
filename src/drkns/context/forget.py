@@ -12,7 +12,7 @@ _to_short_extra_pattern_error_message = \
     'Extra pattern is too short'
 
 _empty_warning_message = \
-    'No files found to forget. You can use `drkns list` to see unit names'
+    'No files found to forget. You can use `drkns list` to see unit names.'
 
 
 def forget(unit_and_pattern_input: str):
@@ -50,7 +50,10 @@ def _get_unit_name_and_extra_pattern(
     unit_and_pattern_input: str
 ) -> Tuple[str, str]:
     parts = unit_and_pattern_input.split('/')
-    unit_name = parts.pop(0)
+
+    # similar substitution when generating paths
+    unit_name = parts.pop(0).replace('.', '_')
+
     extra_pattern = parts.pop(0) if len(parts) > 0 else ''
     if (len(extra_pattern) > 0) and (len(extra_pattern) < 12):
         sys.stderr.write(_to_short_extra_pattern_error_message)
