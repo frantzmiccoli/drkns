@@ -1,4 +1,5 @@
 import copy
+import time
 from typing import Tuple, List, Dict, Optional
 
 from drkns.configunit.get_hash import get_hash
@@ -101,7 +102,9 @@ class _PlanRunner:
         # Run command
         command = '(cd "' + config_unit.directory + '"; \n' + step.command +\
                   '\n)'
+        start_time = time.time()
         return_code, output, subprocess = sh(command, detached=step.background)
+        duration = time.time() - start_time
         successful = return_code == 0
 
         if subprocess.poll() is None:
@@ -111,7 +114,8 @@ class _PlanRunner:
             StepExecutionStatus(
                 config_unit.name, step_name,
                 successful=successful, output=output,
-                step_type=step_type, hash=get_hash(config_unit))
+                step_type=step_type, hash=get_hash(config_unit),
+                duration=duration)
 
         return step_execution_status
 
