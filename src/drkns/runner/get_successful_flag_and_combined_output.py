@@ -1,15 +1,14 @@
-from typing import List, Tuple
-
+from drkns.stepexecutionstatus.get_status_message_and_output_from_status import (
+    get_status_message_and_output_from_status,
+)
 from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
-from drkns.stepexecutionstatus.get_status_message_and_output_from_status import\
-    get_status_message_and_output_from_status
 
 
 def get_successful_flag_and_combined_output(
-    execution_history: List[StepExecutionStatus],
+    execution_history: list[StepExecutionStatus],
     summary: bool = False,
     limit_output: bool = False
-) -> Tuple[bool, List[str]]:
+) -> tuple[bool, list[str]]:
     outputs = []
     statuses = []
     successful = True

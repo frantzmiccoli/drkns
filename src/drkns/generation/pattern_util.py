@@ -1,5 +1,3 @@
-from typing import List
-
 import re
 
 from drkns.exception import UnableToFindPattern
@@ -7,7 +5,7 @@ from drkns.exception import UnableToFindPattern
 
 def format_list_in_template(
         tag: str,
-        items: List[str],
+        items: list[str],
         template: str,
         line_level: bool
 ) -> str:
@@ -25,7 +23,7 @@ def format_list_in_template(
 
 def format_list_optional_in_template(
         tag: str,
-        items: List,
+        items: list,
         template: str
 ) -> str:
     list_optional_re = get_list_optional_re_from_tag(tag)

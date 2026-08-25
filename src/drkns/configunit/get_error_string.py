@@ -1,12 +1,11 @@
 import os
-from typing import List, Optional
 
-from drkns.configunit.ConfigUnit import ConfigUnit
 import drkns.step.step_type
+from drkns.configunit.ConfigUnit import ConfigUnit
 
 
-def get_error_string(config_unit: ConfigUnit, indent: Optional[int] = None) \
-        -> Optional[str]:
+def get_error_string(config_unit: ConfigUnit, indent: int | None = None) \
+        -> str | None:
     if indent is None:
         indent = 0
 
@@ -21,8 +20,8 @@ def get_error_string(config_unit: ConfigUnit, indent: Optional[int] = None) \
         indent_string + ('\n' + indent_string).join(errors) + '\n\n'
 
 
-def _get_errors(config_unit: ConfigUnit, indent: int) -> List[str]:
-    errors: List[str] = []
+def _get_errors(config_unit: ConfigUnit, indent: int) -> list[str]:
+    errors: list[str] = []
     if config_unit.directory is None:
         errors.append(config_unit.name + ': directory is not set')
     elif not os.path.exists(config_unit.directory):
@@ -48,7 +47,7 @@ def _get_errors(config_unit: ConfigUnit, indent: int) -> List[str]:
 
 
 def _get_dependency_or_step_names_error(
-        config_unit: ConfigUnit) -> Optional[str]:
+        config_unit: ConfigUnit) -> str | None:
     names = [dependency.name for dependency in config_unit.dependencies]
     for step_type in drkns.step.step_type.types:
         names += list(config_unit.get_steps(step_type).keys())

@@ -1,8 +1,8 @@
-from os import walk, path, unlink
-import pickle
 import datetime
+import pickle
+from os import path, unlink, walk
 
-from drkns.context.get_unit_step_path import persistence_directory, extension
+from drkns.context.get_unit_step_path import extension, persistence_directory
 from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
 
 
@@ -40,8 +40,15 @@ def _get_too_old_file_paths():
 
 def _is_file_to_old(file_path) -> bool:
     status = _get_persisted_status(file_path)
-    four_weeks_ago = datetime.datetime.now() - datetime.timedelta(weeks=4)
-    return status.datetime < four_weeks_ago
+    now = datetime.datetime.now(datetime.UTC)
+    four_weeks_ago = now - datetime.timedelta(weeks=4)
+
+    status_datetime = status.datetime
+    if status_datetime.tzinfo is None:  # 20260825 legacy cache entries
+        status_datetime = status_datetime.replace(
+            tzinfo=datetime.UTC)
+
+    return status_datetime < four_weeks_ago
 
 
 def _get_persisted_status(file_path) -> StepExecutionStatus:

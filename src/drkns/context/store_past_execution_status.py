@@ -1,9 +1,9 @@
 import pickle
 
 from drkns.configunit.ConfigUnit import ConfigUnit
-from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
 from drkns.context.Context import context
 from drkns.context.get_unit_step_path import get_unit_step_path
+from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
 
 
 def store_past_execution_status(

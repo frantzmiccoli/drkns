@@ -1,5 +1,3 @@
-from typing import List, Tuple
-
 
 from drkns.configunit.ConfigUnit import ConfigUnit
 from drkns.exception import DependenciesNotAvailable
@@ -11,14 +9,14 @@ class _DependencyGroupsConfigurationResolver:
     def __init__(self, root_config_unit: ConfigUnit):
         self._root_config_unit: ConfigUnit = root_config_unit
 
-        self._execution_plan_units: List[ConfigUnit] = []
+        self._execution_plan_units: list[ConfigUnit] = []
         self._groups_configuration: \
-            List[Tuple[str, List[ConfigUnit], List[str]]] = []
-        self._available_dependencies: List[ConfigUnit] = []
+            list[tuple[str, list[ConfigUnit], list[str]]] = []
+        self._available_dependencies: list[ConfigUnit] = []
 
     def get_groups_configuration(
             self
-    ) -> List[Tuple[str, List[ConfigUnit], List[str]]]:
+    ) -> list[tuple[str, list[ConfigUnit], list[str]]]:
         self._load_execution_plan_units()
         self._resolve_group_configurations()
 
@@ -65,6 +63,6 @@ class _DependencyGroupsConfigurationResolver:
 
 def get_dependency_groups_configuration(
         root_config: ConfigUnit
-) -> List[Tuple[str, List[ConfigUnit], List[str]]]:
+) -> list[tuple[str, list[ConfigUnit], list[str]]]:
     resolver = _DependencyGroupsConfigurationResolver(root_config)
     return resolver.get_groups_configuration()

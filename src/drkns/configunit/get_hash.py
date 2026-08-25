@@ -1,8 +1,8 @@
-from dirhash import dirhash  # type: ignore
 from hashlib import sha1
 
-from drkns.configunit.ConfigUnit import ConfigUnit
+from dirhash import dirhash  # type: ignore
 
+from drkns.configunit.ConfigUnit import ConfigUnit
 
 # Can be used when we have altered our data struct to discard previous run.
 # So far empty has we had nothing to discard (no breaking changes).

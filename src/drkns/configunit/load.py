@@ -1,12 +1,14 @@
-from ruamel.yaml import YAML
-
 import os
 import re
-from typing import Optional, List
 
-from drkns.exception import MalformedIgnorePatternException
-from drkns.configunit.ConfigUnit import ConfigUnit
+from ruamel.yaml import YAML
+
 from drkns.configunit import config_directory
+from drkns.configunit.ConfigUnit import ConfigUnit
+from drkns.exception import (
+    ConfigParsingException,
+    MalformedIgnorePatternException,
+)
 
 _ignored_by_default = [
     '.git', '.git/', '.drknspersistence/', '*.pyc', '__pycache__/'
@@ -15,8 +17,8 @@ _ignored_by_default = [
 
 def load(
         root_path: str,
-        inherited_ignored: Optional[List[str]] = None,
-        original_root_path: Optional[str] = None
+        inherited_ignored: list[str] | None = None,
+        original_root_path: str | None = None
         ) -> ConfigUnit:
     root_path = os.path.abspath(root_path)
     if original_root_path is None:
@@ -50,9 +52,9 @@ def load(
     raw_dependencies = data.get('dependencies', [])
 
     if isinstance(raw_dependencies, dict):
-        error_message = 'dependencies must be an array of path now, ' + \
-                        'error in: ' + root_path
-        raise Exception(error_message)
+        error_message = 'dependencies must be an array of paths now, ' + \
+            'error in: ' + root_path
+        raise ConfigParsingException(error_message)
 
     parsed_dependencies = []
     for relative_path in raw_dependencies:
@@ -94,7 +96,7 @@ def _get_unit_name(config_path: str, original_root_path: str) -> str:
     return unit_name
 
 
-def _get_ignored(path: str) -> List[str]:
+def _get_ignored(path: str) -> list[str]:
     dir_name = path
     if not os.path.isdir(dir_name):
         dir_name = os.path.dirname(dir_name)
@@ -103,12 +105,13 @@ def _get_ignored(path: str) -> List[str]:
     if not os.path.exists(drkns_ignore_path):
         return []
 
-    handle = open(drkns_ignore_path)
-    ignored_raw = handle.read()
+    with open(drkns_ignore_path) as handle:
+        ignored_raw = handle.read()
+
     ignored_raw = ignored_raw.replace('\r', ' ')
     ignored_raw = ignored_raw.replace('\n', ' ')
     ignored_raw = ignored_raw.replace(',', ' ')
-    separator = u' '
+    separator = ' '
     ignored_raw = re.sub(r'\s\s+', separator, ignored_raw)
 
     ignored = ignored_raw.split(separator)
@@ -117,7 +120,7 @@ def _get_ignored(path: str) -> List[str]:
     return ignored
 
 
-def _check_ignored(ignored: List[str]):
+def _check_ignored(ignored: list[str]):
     for ignored_item in ignored:
         slash_index = ignored_item.find('/')
         if slash_index == -1:

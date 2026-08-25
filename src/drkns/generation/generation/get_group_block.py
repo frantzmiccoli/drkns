@@ -1,24 +1,26 @@
-from typing import List
-
 import os
 
-
-from drkns.util import get_longest_common_prefix
 from drkns.configunit.ConfigUnit import ConfigUnit
-from drkns.generation.GenerationTemplate import GenerationTemplate
+from drkns.generation._tags import (
+    dependency_groups_names_tag,
+    group_name_tag,
+    group_units_tag,
+)
 from drkns.generation.generation.get_unit_block import get_unit_block
-from drkns.generation.pattern_util \
-    import format_list_in_template, get_pattern_from_tag, \
-        format_list_optional_in_template
-from drkns.generation._tags \
-    import group_units_tag, group_name_tag, dependency_groups_names_tag
+from drkns.generation.GenerationTemplate import GenerationTemplate
+from drkns.generation.pattern_util import (
+    format_list_in_template,
+    format_list_optional_in_template,
+    get_pattern_from_tag,
+)
+from drkns.util import get_longest_common_prefix
 
 
 def get_group_block(
         generation_template: GenerationTemplate,
         group_name: str,
-        group_config_units: List[ConfigUnit],
-        dependency_group_names: List[str]
+        group_config_units: list[ConfigUnit],
+        dependency_group_names: list[str]
 ) -> str:
     formatted_config_units = [
         get_unit_block(generation_template, config_unit)
@@ -43,7 +45,7 @@ def get_group_block(
 
 def _get_group_name(
         generation_template: GenerationTemplate,
-        group_config_units: List[ConfigUnit]
+        group_config_units: list[ConfigUnit]
 ) -> str:
     truncated_directories = []
     names = []

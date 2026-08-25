@@ -1,14 +1,13 @@
-from typing import Tuple
-
-
-from drkns.generation.templateloading.get_generation_template_path \
-    import get_generation_template_path
-import drkns.generation.pattern_util as pattern_util
-from drkns.generation.GenerationTemplate import GenerationTemplate
 from drkns.exception import UnableToParseGenerationTemplateBlock
-from drkns.generation._tags import unit_template_tag_prefix, group_template_tag_prefix
-from drkns.generation.templateloading.check_generation_template \
-    import check_generation_template
+from drkns.generation import pattern_util
+from drkns.generation._tags import group_template_tag_prefix, unit_template_tag_prefix
+from drkns.generation.GenerationTemplate import GenerationTemplate
+from drkns.generation.templateloading.check_generation_template import (
+    check_generation_template,
+)
+from drkns.generation.templateloading.get_generation_template_path import (
+    get_generation_template_path,
+)
 
 
 def get_generation_template(from_path: str) -> GenerationTemplate:
@@ -29,7 +28,7 @@ def _parse(from_path, raw_template) -> GenerationTemplate:
     return generation_template
 
 
-def _extract_from_tag_prefix(tag_prefix: str, content: str) -> Tuple[str, str]:
+def _extract_from_tag_prefix(tag_prefix: str, content: str) -> tuple[str, str]:
     block_re = pattern_util.get_block_re_from_tag_prefix(tag_prefix)
     match = block_re.search(content)
     if match is None:

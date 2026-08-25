@@ -1,15 +1,13 @@
-from typing import Tuple, Optional
 
 from drkns.exception import UnexpectedBranchException
-from drkns.stepexecutionstatus.get_duration_message import \
-    get_duration_message
+from drkns.stepexecutionstatus.get_duration_message import get_duration_message
 from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
 from drkns.util import BColors
 
 
 def get_status_message_and_output_from_status(
     status: StepExecutionStatus
-) -> Tuple[str, Optional[str]]:
+) -> tuple[str, str | None]:
     """
 
     :param status:

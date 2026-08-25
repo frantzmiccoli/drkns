@@ -1,10 +1,8 @@
-from typing import List, Tuple, Optional
-
 from drkns.configunit.ConfigUnit import ConfigUnit
-from drkns.exception import UnexpectedBranchException
-from drkns.runner.get_execution_plan import get_execution_plan
 from drkns.configunit.get_hash import get_hash
 from drkns.context.get_past_execution_status import get_past_execution_status
+from drkns.exception import UnexpectedBranchException
+from drkns.runner.get_execution_plan import get_execution_plan
 from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
 
 
@@ -19,7 +17,7 @@ def get_debug_information(config_unit: ConfigUnit):
 
 
 def _get_hash_debug_information(
-    execution_plan: List[Tuple[ConfigUnit, str, str]]
+    execution_plan: list[tuple[ConfigUnit, str, str]]
 ) -> str:
     names_to_hashes = {}
 
@@ -36,7 +34,7 @@ def _get_hash_debug_information(
 
 
 def _get_execution_plan_debug_information(
-        execution_plan: List[Tuple[ConfigUnit, str, str]]
+        execution_plan: list[tuple[ConfigUnit, str, str]]
         ) -> str:
     lines = []
 
@@ -51,7 +49,7 @@ def _get_execution_plan_debug_information(
 
 
 def _get_line_for_status(
-    status: Optional[StepExecutionStatus],
+    status: StepExecutionStatus | None,
     prefixed_step_name: str
 ) -> str:
     line = '* ' + prefixed_step_name + ': \n\t'

@@ -1,13 +1,15 @@
-import re
-from typing import Optional
 
 
 from drkns.exception import MissingGenerationTemplateTag
+from drkns.generation import pattern_util
+from drkns.generation._tags import (
+    all_group_names_tag,
+    dependency_groups_names_tag,
+    group_name_tag,
+    group_units_tag,
+    unit_name_tag,
+)
 from drkns.generation.GenerationTemplate import GenerationTemplate
-import drkns.generation.pattern_util as pattern_util
-from drkns.generation._tags \
-    import group_units_tag, group_name_tag, unit_name_tag, \
-    dependency_groups_names_tag, all_group_names_tag
 
 
 def check_generation_template(generation_template: GenerationTemplate):
@@ -45,7 +47,7 @@ def _get_tag_error(
         generation_template: GenerationTemplate,
         field: str,
         tag_type: str
-) -> Optional[str]:
+) -> str | None:
     search_in_template = getattr(generation_template, field)
     if tag_type == 'static':
         pattern = pattern_util.get_pattern_from_tag(tag)
