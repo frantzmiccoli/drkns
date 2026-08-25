@@ -1,12 +1,7 @@
-from typing import Optional, Tuple
-
 import os
 import sys
-from shutil import rmtree
 
-from drkns.context.get_unit_step_path import \
-    _get_path_to_unit, persistence_directory
-
+from drkns.context.get_unit_step_path import _get_path_to_unit
 
 _to_short_extra_pattern_error_message = \
     'Extra pattern is too short'
@@ -48,7 +43,7 @@ def forget(unit_and_pattern_input: str):
 
 def _get_unit_name_and_extra_pattern(
     unit_and_pattern_input: str
-) -> Tuple[str, str]:
+) -> tuple[str, str]:
     parts = unit_and_pattern_input.split('/')
 
     # similar substitution when generating paths

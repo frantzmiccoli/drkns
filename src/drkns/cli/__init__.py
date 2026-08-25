@@ -1,33 +1,41 @@
-from typing import Collection, Optional
-import sys
 import os
+import sys
+from collections.abc import Collection
 
-from drkns.exception import (UnexpectedBranchException, MissingCommandException,
-    UnknownCommandException, MissingSyncDirectionException,
-    MissingS3PathException, UnknownCommandFlagException,
-    MissingForgetTargetException)
 from drkns.configunit.ConfigUnit import ConfigUnit
-from drkns.configunit.load import load
 from drkns.configunit.get_error_string import get_error_string
+from drkns.configunit.load import load
 from drkns.context.clean_persistence_files import clean_persistence_files
-from drkns.context.sync import sync_in, sync_out
 from drkns.context.forget import forget
-from drkns.runner.run import run
-from drkns.runner.get_execution_plan import get_execution_plan
-from drkns.runner.get_dependency_groups_configuration \
-    import get_dependency_groups_configuration
-from drkns.generation.templateloading.get_generation_template \
-    import get_generation_template
-from drkns.generation.generation.get_formatted_from_groups_configuration \
-    import get_formatted_from_groups_configuration
+from drkns.context.sync import sync_in, sync_out
 from drkns.debug.get_debug_information import get_debug_information
+from drkns.exception import (
+    MissingCommandException,
+    MissingForgetTargetException,
+    MissingS3PathException,
+    MissingSyncDirectionException,
+    UnexpectedBranchException,
+    UnknownCommandException,
+    UnknownCommandFlagException,
+)
+from drkns.generation.generation.get_formatted_from_groups_configuration import (
+    get_formatted_from_groups_configuration,
+)
+from drkns.generation.templateloading.get_generation_template import (
+    get_generation_template,
+)
+from drkns.runner.get_dependency_groups_configuration import (
+    get_dependency_groups_configuration,
+)
+from drkns.runner.get_execution_plan import get_execution_plan
+from drkns.runner.run import run
 
 
 class Cli:
 
     def __init__(self) -> None:
         self._args: Collection[str] = []
-        self._command: Optional[str] = None
+        self._command: str | None = None
         self._force_success: bool = False
         self._summary: bool = False
         self._limit_output: bool = False

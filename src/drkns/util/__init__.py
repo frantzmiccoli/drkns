@@ -1,6 +1,5 @@
-from subprocess import Popen, PIPE, STDOUT
 import sys
-from typing import Tuple, Optional, List
+from subprocess import PIPE, STDOUT, Popen
 
 
 class BColors:
@@ -16,8 +15,8 @@ class BColors:
     UNDERLINE = '\033[4m'
 
 
-def sh(command: str, detached: Optional[bool] = None)\
-        -> Tuple[int, str, Popen]:
+def sh(command: str, detached: bool | None = None)\
+        -> tuple[int, str, Popen]:
     kwargs = {
         'shell': True,
         'stdin': PIPE,
@@ -37,13 +36,13 @@ def sh(command: str, detached: Optional[bool] = None)\
     return p.returncode, p_stdout, p
 
 
-def get_longest_common_prefix(items: List[str]) -> str:
+def get_longest_common_prefix(items: list[str]) -> str:
     longest_prefix = ''
     if len(items) == 0:
         return longest_prefix
 
     max_index = min([len(item) for item in items])
-    for i in range(0, max_index):
+    for i in range(max_index):
         reference_char = items[0][i]
         for item in items:
             if item[i] != reference_char:

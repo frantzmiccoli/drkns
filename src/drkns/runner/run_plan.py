@@ -1,35 +1,31 @@
 import copy
 import time
-from typing import Tuple, List, Dict, Optional
 
-from drkns.configunit.get_hash import get_hash
-from drkns.util import sh
-from drkns.configunit import ConfigUnit
-from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
-
-from drkns.step.get_step_type import get_step_type
 import drkns.step.step_type
-from drkns.context.get_past_execution_status import \
-    get_past_execution_status
-from drkns.context.store_past_execution_status import \
-    store_past_execution_status
+from drkns.configunit import ConfigUnit
+from drkns.configunit.get_hash import get_hash
+from drkns.context.get_past_execution_status import get_past_execution_status
+from drkns.context.store_past_execution_status import store_past_execution_status
+from drkns.step.get_step_type import get_step_type
+from drkns.stepexecutionstatus.StepExecutionStatus import StepExecutionStatus
+from drkns.util import sh
 
 
-def run_plan(plan: List[Tuple[ConfigUnit, str, str]]) \
-        -> List[StepExecutionStatus]:
+def run_plan(plan: list[tuple[ConfigUnit, str, str]]) \
+        -> list[StepExecutionStatus]:
     return _PlanRunner(plan).run()
 
 
 class _PlanRunner:
 
-    def __init__(self, plan: List[Tuple[ConfigUnit, str, str]]):
-        self._plan: List[Tuple[ConfigUnit, str, str]] = plan
-        self._status_history: List[StepExecutionStatus] = []
-        self._failed_dependency_check_statuses: Dict[str, StepExecutionStatus] = {}
-        self._failed_dependency_build_statuses: Dict[str, StepExecutionStatus] = {}
-        self._processing_config_unit: Optional[ConfigUnit] = None
+    def __init__(self, plan: list[tuple[ConfigUnit, str, str]]):
+        self._plan: list[tuple[ConfigUnit, str, str]] = plan
+        self._status_history: list[StepExecutionStatus] = []
+        self._failed_dependency_check_statuses: dict[str, StepExecutionStatus] = {}
+        self._failed_dependency_build_statuses: dict[str, StepExecutionStatus] = {}
+        self._processing_config_unit: ConfigUnit | None = None
 
-    def run(self) -> List[StepExecutionStatus]:
+    def run(self) -> list[StepExecutionStatus]:
         self._status_history = []
         for config_unit, step_name, prefixed_step_name in self._plan:
             self._clean_up_pending_processes_if_needed(config_unit)
@@ -51,7 +47,7 @@ class _PlanRunner:
 
     def _clean_up_pending_processes_if_needed(
         self,
-        current_config_unit: Optional[ConfigUnit] = None
+        current_config_unit: ConfigUnit | None = None
     ):
         need_process_cleanup = self._need_to_cleanup_pending_processes(
             current_config_unit)
@@ -69,7 +65,7 @@ class _PlanRunner:
 
     def _need_to_cleanup_pending_processes(
             self,
-            current_config_unit: Optional[ConfigUnit]
+            current_config_unit: ConfigUnit | None
             ) -> bool:
         if self._processing_config_unit is None:
             return False
@@ -150,7 +146,7 @@ class _PlanRunner:
         self,
         config_unit: ConfigUnit,
         step_name: str
-    ) -> Optional[StepExecutionStatus]:
+    ) -> StepExecutionStatus | None:
         """
         Will resolve a persisted execution status or a failed one from
         dependency execution
@@ -169,7 +165,7 @@ class _PlanRunner:
             self,
             config_unit: ConfigUnit,
             step_name: str
-    ) -> Optional[StepExecutionStatus]:
+    ) -> StepExecutionStatus | None:
         blocking_execution_status = \
             self._get_blocking_failure_execution_status(config_unit, step_name)
 
@@ -196,7 +192,7 @@ class _PlanRunner:
             self,
             config_unit: ConfigUnit,
             step_name: str
-            ) -> Optional[StepExecutionStatus]:
+            ) -> StepExecutionStatus | None:
         step_type = get_step_type(config_unit, step_name)
 
         if step_type == drkns.step.step_type.CLEANUP:

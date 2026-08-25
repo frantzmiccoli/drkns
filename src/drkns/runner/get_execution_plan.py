@@ -1,18 +1,17 @@
-from typing import Tuple, List, Optional
 
-from drkns.configunit.ConfigUnit import ConfigUnit
-from drkns.exception import CircularDependencyException, \
-    UnknownDependencyException
 import drkns.step.step_type
+from drkns.configunit.ConfigUnit import ConfigUnit
+from drkns.exception import CircularDependencyException, UnknownDependencyException
+from drkns.runner.remove_execution_plan_redundancies import (
+    remove_execution_plan_redundancies,
+)
 from drkns.step.get_step_type import get_step_type
-from drkns.runner.remove_execution_plan_redundancies \
-    import remove_execution_plan_redundancies
 
 
 def get_execution_plan(
     config_unit: ConfigUnit,
-    step_name: Optional[str] = None
-) -> List[Tuple[ConfigUnit, str, str]]:
+    step_name: str | None = None
+) -> list[tuple[ConfigUnit, str, str]]:
     """
     Execution plan guarantees that steps are in dependency order:
     * Dependencies first
@@ -32,10 +31,10 @@ def get_execution_plan(
 
 def _get_execution_plan(
     config_unit: ConfigUnit,
-    step_name: Optional[str] = None,
-    allowed_types: Optional[List[str]] = None,
-    prefix: Optional[str] = None
-) -> List[Tuple[ConfigUnit, str, str]]:
+    step_name: str | None = None,
+    allowed_types: list[str] | None = None,
+    prefix: str | None = None
+) -> list[tuple[ConfigUnit, str, str]]:
     if step_name is None:
         prefix = '' if prefix is None else prefix
         steps = _get_nested_dependencies_steps(config_unit, prefix)
@@ -73,8 +72,8 @@ def _get_execution_plan(
 def _get_nested_dependencies_steps(
     config_unit: ConfigUnit,
     prefix: str,
-    allowed_types: Optional[List[str]] = None
-) -> List[Tuple[ConfigUnit, str, str]]:
+    allowed_types: list[str] | None = None
+) -> list[tuple[ConfigUnit, str, str]]:
     """
     If we are calling this function we want to resolve every dependency
     (at every steps i.e. check, build and cleanup)
@@ -104,9 +103,9 @@ def _get_nested_dependencies_steps(
 def _get_internal_steps(
     config_unit: ConfigUnit,
     prefix: str,
-    target_step_name: Optional[str] = None,
-    allowed_types: Optional[List[str]] = None
-) -> List[Tuple[ConfigUnit, str, str]]:
+    target_step_name: str | None = None,
+    allowed_types: list[str] | None = None
+) -> list[tuple[ConfigUnit, str, str]]:
     """
 
     :param config_unit:
@@ -116,7 +115,7 @@ def _get_internal_steps(
     :param allowed_types:
     :return:
     """
-    step_names: List[str] = []
+    step_names: list[str] = []
 
     allowed_types = drkns.step.step_type.types \
         if allowed_types is None else allowed_types
@@ -132,7 +131,7 @@ def _get_internal_steps(
     # whatever happens we clean up
     step_names += config_unit.get_steps(drkns.step.step_type.CLEANUP).keys()
 
-    plan_steps: List[Tuple[ConfigUnit, str, str]] = []
+    plan_steps: list[tuple[ConfigUnit, str, str]] = []
     found_target = False
     for step_name in step_names:
         is_cleanup = get_step_type(config_unit, step_name) == \
@@ -152,7 +151,7 @@ def _get_internal_steps(
 def _get_nested_config_unit_and_step(
     root_config_unit: ConfigUnit,
     composite_step_name: str
-) -> Tuple[ConfigUnit, Optional[str]]:
+) -> tuple[ConfigUnit, str | None]:
 
     dot_index = composite_step_name.find('.')
     if dot_index == -1:

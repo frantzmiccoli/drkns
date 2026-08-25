@@ -1,9 +1,9 @@
-from typing import Union, Dict
+# noqa: N999
 
 
 class Step:
 
-    def __init__(self, data: Union[Dict,str]):
+    def __init__(self, data: dict | str):
         if not isinstance(data, dict):
             data = {
                 'command': data,

@@ -1,5 +1,6 @@
 from drkns.configunit.ConfigUnit import ConfigUnit
-import drkns.step.step_type as step_type
+from drkns.exception import ConfigParsingException
+from drkns.step import step_type
 
 
 def get_step_type(config_unit: ConfigUnit, step_name: str) -> str:
@@ -8,5 +9,6 @@ def get_step_type(config_unit: ConfigUnit, step_name: str) -> str:
         if step_name in step_names:
             return possible_step_type
 
-    raise Exception('Unable to resolve type for step ' + step_name +
-                    ' in ConfigUnit ' + config_unit.name)
+    message = 'Unable to resolve type for step ' + step_name + \
+        ' in ConfigUnit ' + config_unit.name
+    raise ConfigParsingException(message)

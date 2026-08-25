@@ -1,7 +1,7 @@
 from drkns.configunit.ConfigUnit import ConfigUnit
+from drkns.generation._tags import unit_name_tag
 from drkns.generation.GenerationTemplate import GenerationTemplate
 from drkns.generation.pattern_util import get_pattern_from_tag
-from drkns.generation._tags import unit_name_tag
 
 
 def get_unit_block(

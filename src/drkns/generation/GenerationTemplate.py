@@ -1,3 +1,4 @@
+# noqa: N999
 
 
 class GenerationTemplate:

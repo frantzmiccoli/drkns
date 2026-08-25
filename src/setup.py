@@ -1,4 +1,4 @@
-from distutils.core import setup
+from distutils.core import setup  # type: ignore[import-not-found]
 from setuptools import find_packages
 
 with open('../README.md') as readme_file:
@@ -6,7 +6,7 @@ with open('../README.md') as readme_file:
 
 setup(
     name='drkns',
-    version='3.2.0',
+    version='4.0.0',
     description='Simple and agnostic monorepo build tool',
     long_description=long_description,
     long_description_content_type="text/markdown",

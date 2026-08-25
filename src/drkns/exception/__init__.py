@@ -3,6 +3,10 @@ class UnknownDependencyException(Exception):
     pass
 
 
+class ConfigParsingException(Exception):
+    pass
+
+
 class CircularDependencyException(Exception):
     pass
 

@@ -1,9 +1,11 @@
 import os
 import re
 
-from drkns.exception import MissingGenerationTemplateDirectoryException, \
-    MissingGenerationTemplateException, MultipleGenerationTemplateException
-
+from drkns.exception import (
+    MissingGenerationTemplateDirectoryException,
+    MissingGenerationTemplateException,
+    MultipleGenerationTemplateException,
+)
 
 _template_directory = '.drknsgeneration'
 _template_file_re = re.compile(r'^.*\.template\..*$')
