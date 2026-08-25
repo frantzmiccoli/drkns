@@ -8,26 +8,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.8, 3.9, "3.10", 3.12]
+        python-version: [3.13, 3.14]
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Check python version 🐍
         run: python -c "import sys; print(sys.version)"
 
-      - name: Install pipenv 🧱
-        run: pip install pipenv
+      - name: Install uv 🧱
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
       - name: Install dependencies 🏗
         run: |
-          pipenv install --dev --python ${{ matrix.python-version }}
+          uv sync --python ${{ matrix.python-version }}
 
       - name: MyPy 🧐
-        run: (cd src; pipenv run mypy --install-types --non-interactive drkns)
+        run: uv run mypy --install-types --non-interactive drkns
+
+      - name: ruff 🧐
+        run: uv run ruff check ./src
 
       - name: Test 🔍
-        run: export PYTHONPATH=${PYTHONPATH}:${PWD}/src pipenv run pytest tests
+        run: uv run pytest tests
