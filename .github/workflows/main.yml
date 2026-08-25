@@ -27,7 +27,7 @@ jobs:
           uv sync --python ${{ matrix.python-version }}
 
       - name: MyPy 🧐
-        run: uv run mypy --install-types --non-interactive drkns
+        run: uv run mypy --install-types --non-interactive ./src
 
       - name: ruff 🧐
         run: uv run ruff check ./src
