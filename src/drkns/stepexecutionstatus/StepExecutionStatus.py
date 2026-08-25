@@ -9,6 +9,10 @@ _cwd = os.getcwd()
 
 class StepExecutionStatus:
 
+    # Fallback for objects unpickled from a persisted cache written before
+    # this attribute existed.
+    duration: Optional[float] = None
+
     def __init__(
         self,
         config_unit_name: str,
@@ -17,7 +21,8 @@ class StepExecutionStatus:
         successful: bool = False,
         ignored: bool = False,
         step_type: str = drkns.step.step_type.CHECK,
-        hash: Optional[str] = None
+        hash: Optional[str] = None,
+        duration: Optional[float] = None
     ):
         self.config_unit_name: str = config_unit_name
         self.step_name: str = step_name
@@ -27,6 +32,7 @@ class StepExecutionStatus:
         self.output: str = output
 
         self.hash: Optional[str] = hash
+        self.duration: Optional[float] = duration
         self.restored: bool = False
 
         self.datetime: datetime = datetime.now()
