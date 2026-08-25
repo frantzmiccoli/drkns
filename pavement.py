@@ -10,7 +10,7 @@ def build():
     script = '''
         mkdir ./build
         cp -rf ./src/* ./build/
-        (cd ./build; python setup.py sdist bdist_wheel)
+        (cd ./build; uv build)
     '''
 
     sh(script)
