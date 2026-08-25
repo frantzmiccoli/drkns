@@ -1,6 +1,11 @@
 [project]
-name = "frantzmiccoli-drkns"
+name = "drkns"
 version = "4.0.0"
+description = "Simple and agnostic monorepo build tool"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE.md"]
+keywords = ["devops", "build", "test", "monorepo", "cache"]
 requires-python = ">=3.13"
 dependencies = [
     "awscli>=1.46.0",
@@ -17,3 +22,16 @@ dev = [
     "twine>=7.0.0",
     "types-setuptools>=84.0.0.20260812",
 ]
+
+[project.urls]
+Homepage = "https://github.com/frantzmiccoli/drkns"
+
+[build-system]
+requires = ["setuptools>=84"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools]
+script-files = ["bin/drkns"]

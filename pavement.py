@@ -4,22 +4,12 @@ import os
 
 @task
 def build():
-    if os.path.exists('./build'):
-        sh('rm -rf ./build')
+    if os.path.exists('./dist'):
+        sh('rm -rf ./dist')
 
-    script = '''
-        mkdir ./build
-        cp -rf ./src/* ./build/
-        (cd ./build; uv build)
-    '''
-
-    sh(script)
+    sh('uv build')
 
 
 @task
 def deploy():
-    script = '''
-        twine upload ./build/dist/*
-    '''
-
-    sh(script)
+    sh('twine upload ./dist/*')
